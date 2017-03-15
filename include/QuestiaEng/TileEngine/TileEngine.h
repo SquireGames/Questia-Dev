@@ -29,7 +29,7 @@ public:
     TileEngine(sf::RenderWindow& _window, ResourceManager& _resourceManager);
     ~TileEngine();
 
-    void loadMap(std::string _mapName, SaveFile_TileEngine::TextureMode textureMode, SaveFile_TileEngine::TileMode tileMode);
+    void loadMap(std::string _mapName, TileEng::TextureMode textureMode, TileEng::TileMode tileMode);
 
     //draws chunks
     void drawMap();
