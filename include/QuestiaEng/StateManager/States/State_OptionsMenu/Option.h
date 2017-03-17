@@ -8,7 +8,7 @@
 
 #include "QuestiaEng/StateManager/States/State_OptionsMenu/Option_Base.h"
 #include "QuestiaEng/Utl/Utl.h"
-#include "QuestiaEng/Utl/Controls/Keyboard.h"
+#include "QuestiaEng/Utl/Controls/Input.h"
 
 template <class T>
 class Option : public Option_Base

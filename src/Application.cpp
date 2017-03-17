@@ -7,8 +7,7 @@ Application::Application():
 	std::cout << "  Questia Executed  " << std::endl;
 	std::cout << "--------------------" << std::endl;
 	
-	eng.tile().loadMap("Demo_1", TileEng::TextureMode::Map, TileEng::TileMode::Batch);
-	eng.tile().setPosition(100,100);
+	eng.state().createState(new State_MainMenu());
 }
 
 Application::~Application()
@@ -28,13 +27,12 @@ void Application::run()
 		while(eng.tick())
 		{
 			eng.processInput();
+			eng.state().updateState();
 		}
 		
 		//render when possible, but only to the framerate limit
-		eng.tile().drawMap();
-		
+		eng.state().displayTexturesState();
 		eng.render();
 	}
 }
-
 

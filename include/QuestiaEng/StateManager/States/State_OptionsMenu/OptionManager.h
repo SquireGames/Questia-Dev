@@ -6,11 +6,11 @@
 #include "QuestiaEng/StateManager/States/State_OptionsMenu/Option.h"
 #include "QuestiaEng/StateManager/States/State_OptionsMenu/Option_Base.h"
 
-#include "QuestiaEng/Utl/SaveFile/SaveFile_Options.h"
+#include "QuestiaEng/SaveFile_Options.h"
 
 #include "QuestiaEng/GuiManager/GuiManager.h"
 
-#include "QuestiaEng/Utl/Controls/Keyboard.h"
+#include "QuestiaEng/Utl/Controls/Input.h"
 
 struct ButtonData
 {

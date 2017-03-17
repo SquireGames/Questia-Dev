@@ -8,6 +8,9 @@
 #include "QuestiaEng/GuiManager/GuiManager.h"
 #include "QuestiaEng/GuiManager/GuiLoader.h"
 #include "QuestiaEng/TileEngine/TileEngine.h"
+#include "QuestiaEng/StateManager/StateManager.h"
+
+#include "QuestiaEng/SaveFile_Options.h"
 
 class Engine
 {
@@ -31,8 +34,13 @@ public:
 	GuiManager&			gui() 	{return guiManager;}
 	GuiLoader& 			guiLd() {return guiLoader;}
 	TileEngine&	 		tile()	{return tileEngine;}
+	StateManager& 		state() {return stateManager;}
 
 private:
+	//options
+	SaveFile_Options saveFile;
+	
+	//main window
 	sf::RenderWindow window;
 
 	//manager
@@ -40,7 +48,8 @@ private:
 	InputBuffer inputBuffer;
 	GuiManager guiManager;
 	GuiLoader guiLoader;
-	TileEngine tileEngine;
+	TileEngine tileEngine;	
+	StateManager stateManager;
 
 	//timing
 	sf::Clock clock;

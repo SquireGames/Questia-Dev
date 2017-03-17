@@ -16,8 +16,8 @@
 
 #include "QuestiaEng/GuiManager/GuiLoader.h"
 
-#include "QuestiaEng/Utl/SaveFile/SaveFile.h"
-#include "QuestiaEng/Utl/SaveFile/SaveFile_Options.h"
+#include "QuestiaEng/Utl/SaveFile.h"
+#include "QuestiaEng/SaveFile_Options.h"
 #include "QuestiaEng/Data/Data_Desktop.h"
 
 #include "QuestiaEng/Utl/Threads/ThreadPool_Fixed.h"

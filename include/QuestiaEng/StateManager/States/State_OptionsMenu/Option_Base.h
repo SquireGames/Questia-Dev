@@ -2,7 +2,7 @@
 #define OPTION_BASE_H
 
 #include <string>
-#include "QuestiaEng/Utl/Controls/Keyboard.h"
+#include "QuestiaEng/Utl/Controls/Input.h"
 
 enum class OptionType {choice, functional, input};
 

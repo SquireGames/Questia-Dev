@@ -17,8 +17,8 @@
 #include "QuestiaEng/ResourceManager/ResourceManager.h"
 #include "QuestiaEng/GuiManager/GuiManager.h"
 
-#include "QuestiaEng/Utl/SaveFile/SaveFile_Options.h"
-#include "QuestiaEng/Utl/SaveFile/SaveFile.h"
+#include "QuestiaEng/SaveFile_Options.h"
+#include "QuestiaEng/Utl/SaveFile.h"
 
 #include "QuestiaEng/Utl/Utl.h"
 
