@@ -2,7 +2,8 @@
 #define MOUSELISTENER_H
 
 #include <iostream>
-#include <SFML/Window/Mouse.hpp>
+#include "SFML/Window/Mouse.hpp"
+#include "QuestiaEng/Utl/Controls/Input.h"
 
 class MouseListener
 {
@@ -10,9 +11,9 @@ public:
     MouseListener();
 
     void update();
-    bool isMouseHeld(sf::Mouse::Button button);
-    bool isMousePressed(sf::Mouse::Button button);
-    bool isMouseReleased(sf::Mouse::Button button);
+    bool isMouseHeld(ctr::Input button);
+    bool isMousePressed(ctr::Input button);
+    bool isMouseReleased(ctr::Input button);
 
 private:
     bool isMouseHeld_l = false;

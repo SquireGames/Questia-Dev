@@ -18,6 +18,8 @@
 
 #include "QuestiaEng/GuiManager/Button.h"
 
+#include "QuestiaEng/Utl/Type/Vector2.h"
+
 
 class GuiManager
 {
@@ -57,7 +59,7 @@ public:
     bool isClicked(std::string buttonName);
     void drawButtons();
     void deleteButton(std::string buttonName);
-    void setMousePosition(std::pair <float, float> _mouseCoords);
+    void setMousePosition(utl::Vector2f _mouseCoords);
     void setFont(sf::Font _buttonFont);
 
     template <class T>
@@ -151,7 +153,7 @@ private:
     std::string currentGroupEdit;
     std::string currentListEdit;
 
-    std::pair <float, float> mouseCoords;
+    utl::Vector2f mouseCoords;
 
     std::map <std::string, Button*> buttonMap;
     std::list <Button*> buttonDrawList;

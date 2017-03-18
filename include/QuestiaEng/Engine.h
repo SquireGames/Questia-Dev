@@ -2,6 +2,7 @@
 #define ENGINE_H
 
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/Font.hpp>
 
 #include "QuestiaEng/ResourceManager/ResourceManager.h"
 #include "QuestiaEng/Data/InputBuffer.h"
@@ -11,6 +12,9 @@
 #include "QuestiaEng/StateManager/StateManager.h"
 
 #include "QuestiaEng/SaveFile_Options.h"
+
+#include "QuestiaEng/Utl/Type/Vector2.h"
+#include "QuestiaEng/Utl/Controls/MouseListener.h"
 
 class Engine
 {
@@ -35,6 +39,9 @@ public:
 	GuiLoader& 			guiLd() {return guiLoader;}
 	TileEngine&	 		tile()	{return tileEngine;}
 	StateManager& 		state() {return stateManager;}
+	
+	//input
+	MouseListener& 		mouse() {return mouseListener;}
 
 private:
 	//options
@@ -42,6 +49,10 @@ private:
 	
 	//main window
 	sf::RenderWindow window;
+	utl::Vector2ui size_real;
+	utl::Vector2ui size_scaled;
+	utl::Vector2f scaleFactor;
+	utl::Vector2f mousePos;
 
 	//manager
 	ResourceManager resourceManager;
@@ -50,6 +61,12 @@ private:
 	GuiLoader guiLoader;
 	TileEngine tileEngine;	
 	StateManager stateManager;
+	
+	//input
+	MouseListener mouseListener;
+	
+	//text
+	sf::Font font;
 
 	//timing
 	sf::Clock clock;
