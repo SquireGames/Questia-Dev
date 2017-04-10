@@ -28,25 +28,26 @@ public:
 	bool tick();
 	void processInput();
 	void render();
-	
+
 	//used in a state
 	void terminate() {toTerminate = true;}
 
 	//interfaces
+	sf::RenderWindow&   win()   {return window;}
 	ResourceManager& 	res() 	{return resourceManager;}
 	InputBuffer& 		input() {return inputBuffer;}
 	GuiManager&			gui() 	{return guiManager;}
 	GuiLoader& 			guiLd() {return guiLoader;}
 	TileEngine&	 		tile()	{return tileEngine;}
 	StateManager& 		state() {return stateManager;}
-	
+
 	//input
 	MouseListener& 		mouse() {return mouseListener;}
 
 private:
 	//options
 	SaveFile_Options saveFile;
-	
+
 	//main window
 	sf::RenderWindow window;
 	utl::Vector2ui size_real;
@@ -59,12 +60,12 @@ private:
 	InputBuffer inputBuffer;
 	GuiManager guiManager;
 	GuiLoader guiLoader;
-	TileEngine tileEngine;	
+	TileEngine tileEngine;
 	StateManager stateManager;
-	
+
 	//input
 	MouseListener mouseListener;
-	
+
 	//text
 	sf::Font font;
 
@@ -72,7 +73,7 @@ private:
 	sf::Clock clock;
 	sf::Time timePerFrame;
 	sf::Time timeSinceLastTick;
-	
+
 	//flags
 	bool toTerminate = false;
 };

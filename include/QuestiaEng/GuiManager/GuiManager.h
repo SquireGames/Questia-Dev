@@ -59,6 +59,7 @@ public:
     bool isClicked(std::string buttonName);
     void drawButtons();
     void deleteButton(std::string buttonName);
+	void purgeButtons();
     void setMousePosition(utl::Vector2f _mouseCoords);
     void setFont(sf::Font _buttonFont);
 

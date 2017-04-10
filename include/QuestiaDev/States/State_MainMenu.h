@@ -5,15 +5,14 @@
 
 #include "QuestiaEng/Utl/Controls/Input.h"
 
+#include "QuestiaEng/Engine.h"
+
 class State_MainMenu : public State
 {
 public:
-	//TODO make getting eng in a state automated
 	State_MainMenu();
 	void init();
 	~State_MainMenu();
-	
-	
 
 	//TODO remove and fix state virtual function
 	void processImput(sf::Keyboard::Key key, bool isPressed) {}

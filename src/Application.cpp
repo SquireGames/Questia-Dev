@@ -1,13 +1,19 @@
 #include "QuestiaDev/Application.h"
 
 Application::Application():
-	eng("Questia", 128)
+	eng("Questia", 500)
 {
 	std::cout << "--------------------" << std::endl;
 	std::cout << "  Questia Executed  " << std::endl;
 	std::cout << "--------------------" << std::endl;
+
+	eng.state().reg("MainMenu", []() {return new State_MainMenu();});
+	eng.state().reg("Game", []() {return new State_Game();});
+	eng.state().reg("Loading", []() {return new State_Loading();});
 	
-	eng.state().createState(new State_MainMenu());
+	eng.state().changeState("MainMenu");
+	
+	eng.guiLd().setGuiPack("Default");
 }
 
 Application::~Application()
@@ -27,12 +33,11 @@ void Application::run()
 		while(eng.tick())
 		{
 			eng.processInput();
-			eng.state().updateState();
+			eng.state().sUpdate();
 		}
-		
+
 		//render when possible, but only to the framerate limit
-		eng.state().displayTexturesState();
+		eng.state().sDisplay();
 		eng.render();
 	}
 }
-

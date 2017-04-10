@@ -6,6 +6,8 @@
 #include "QuestiaEng/Engine.h"
 
 #include "QuestiaDev/States/State_MainMenu.h"
+#include "QuestiaDev/States/State_Game.h"
+#include "QuestiaDev/States/State_Loading.h"
 
 class Application
 {
