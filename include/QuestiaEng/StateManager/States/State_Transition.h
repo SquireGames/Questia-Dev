@@ -36,7 +36,7 @@ public:
     State_Transition(sf::RenderWindow& window, GameState _stateID);
     ~State_Transition();
 
-    void processImput(sf::Keyboard::Key key,bool isPressed);
+    void processInput(sf::Keyboard::Key key,bool isPressed);
     void update(sf::Time elapsedTime);
     void displayTextures();
 

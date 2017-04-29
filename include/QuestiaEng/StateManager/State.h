@@ -18,7 +18,7 @@ public:
 
 	//TODO make this a pure virtual function once legacy states are out!
 	virtual void init();
-	virtual void processImput(sf::Keyboard::Key key, bool isPressed) = 0;
+	virtual void processInput(sf::Keyboard::Key key, bool isPressed) = 0;
 	virtual void update(sf::Time elapsedTime) = 0;
 	virtual void displayTextures() = 0;
 

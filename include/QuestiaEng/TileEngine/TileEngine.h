@@ -12,6 +12,8 @@
 #include <map>
 #include <cmath>    //std::floor
 
+#include "QuestiaEng/TileEngine/TileMap.h"
+
 #include "QuestiaEng/Data/Data_Desktop.h"
 #include "QuestiaEng/ResourceManager/ResourceManager.h"
 
@@ -30,7 +32,7 @@ public:
     TileEngine(sf::RenderWindow& _window, ResourceManager& _resourceManager);
     ~TileEngine();
 
-    void loadMap(std::string _mapName, TileEng::TextureMode textureMode, TileEng::TileMode tileMode);
+    void loadMap(std::string _mapName, TileMap::TextureMode textureMode, TileMap::TileMode tileMode);
 
     //draws chunks
     void drawMap();

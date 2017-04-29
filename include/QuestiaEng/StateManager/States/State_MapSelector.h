@@ -14,7 +14,7 @@ public:
     State_MapSelector(sf::RenderWindow &window);
     ~State_MapSelector();
 
-    void processImput(sf::Keyboard::Key key,bool isPressed);
+    void processInput(sf::Keyboard::Key key,bool isPressed);
     void update(sf::Time elapsedTime);
     void displayTextures();
 

@@ -15,7 +15,7 @@ public:
     State_MultiplayerSelection(sf::RenderWindow &window);
     ~State_MultiplayerSelection();
 
-    void processImput(sf::Keyboard::Key key,bool isPressed);
+    void processInput(sf::Keyboard::Key key,bool isPressed);
     void update(sf::Time elapsedTime);
     void displayTextures();
 

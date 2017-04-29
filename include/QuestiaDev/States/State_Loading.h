@@ -15,12 +15,12 @@ public:
 
 	virtual void displayTextures();
 	virtual void init();
-	virtual void processImput(sf::Keyboard::Key key, bool isPressed);
+	virtual void processInput(sf::Keyboard::Key key, bool isPressed);
 	virtual void update(sf::Time elapsedTime);
 
 private:
 	sf::Sprite loadSprite;
-	float angle = 0.f;
+	sf::Sprite backSprite;
 };
 
 #endif // STATE_LOADING_H

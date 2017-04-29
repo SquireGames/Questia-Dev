@@ -28,7 +28,7 @@ public:
     State_MainMenu(sf::RenderWindow &window);
     ~State_MainMenu();
 
-    void processImput(sf::Keyboard::Key key,bool isPressed);
+    void processInput(sf::Keyboard::Key key,bool isPressed);
     void update(sf::Time elapsedTime);
     void displayTextures();
 

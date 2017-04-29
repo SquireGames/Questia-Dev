@@ -33,7 +33,7 @@ public:
     State_TileMapEditor(sf::RenderWindow &window, std::string mapName);
     ~State_TileMapEditor();
 
-    void processImput(sf::Keyboard::Key key, bool isPressed);
+    void processInput(sf::Keyboard::Key key, bool isPressed);
     void update(sf::Time elapsedTime);
     void displayTextures();
 

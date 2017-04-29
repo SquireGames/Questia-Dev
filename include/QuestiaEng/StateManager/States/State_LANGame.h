@@ -21,7 +21,7 @@ public:
     State_LANGame(sf::RenderWindow &mWindow);
     ~State_LANGame();
 
-    void processImput(sf::Keyboard::Key key,bool isPressed);
+    void processInput(sf::Keyboard::Key key,bool isPressed);
     void update(sf::Time elapsedTime);
     void displayTextures();
 

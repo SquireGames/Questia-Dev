@@ -13,7 +13,7 @@ public:
     State_CharacterSelection(sf::RenderWindow &window);
     ~State_CharacterSelection();
 
-    void processImput(sf::Keyboard::Key key,bool isPressed);
+    void processInput(sf::Keyboard::Key key,bool isPressed);
     void update(sf::Time elapsedTime);
     void displayTextures();
 

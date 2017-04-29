@@ -8,10 +8,10 @@ Application::Application():
 	std::cout << "--------------------" << std::endl;
 
 	eng.state().reg("MainMenu", []() {return new State_MainMenu();});
-	eng.state().reg("Game", []() {return new State_Game();});
-	eng.state().reg("Loading", []() {return new State_Loading();});
+	eng.state().reg("Game",     []() {return new State_Game();});
+	eng.state().reg("Loading",  []() {return new State_Loading();});
 	
-	eng.state().changeState("MainMenu");
+	eng.state().transitionState("MainMenu", "Loading");
 	
 	eng.guiLd().setGuiPack("Default");
 }

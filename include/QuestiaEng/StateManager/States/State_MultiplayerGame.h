@@ -23,7 +23,7 @@ public:
     State_MultiplayerGame(sf::RenderWindow &window);
     ~State_MultiplayerGame();
 
-    void processImput(sf::Keyboard::Key key,bool isPressed);
+    void processInput(sf::Keyboard::Key key,bool isPressed);
     void update(sf::Time elapsedTime);
     void displayTextures();
 
