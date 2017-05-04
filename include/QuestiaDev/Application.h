@@ -6,7 +6,8 @@
 #include "QuestiaEng/Engine.h"
 
 #include "QuestiaDev/States/State_MainMenu/State_MainMenu.h"
-#include "QuestiaDev/States/State_Game/State_Game.h"
+#include "QuestiaDev/States/State_MapEditor/State_MapEditor.h"
+#include "QuestiaDev/States/State_OptionsMenu/State_OptionsMenu.h"
 #include "QuestiaDev/States/State_Loading.h"
 
 class Application

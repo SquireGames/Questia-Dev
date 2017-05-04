@@ -27,7 +27,7 @@ public:
     //draws map with sprites
     void drawMap();
     //draws out all tiles
-    void drawTiles();
+    void drawTiles(sf::Font& font);
     //only draws specific layers (transparency out of 100)
     void drawLayer(int layer, int transparency);
 
@@ -64,6 +64,8 @@ public:
     void changeMapName(std::string newName);
 
 private:
+	SaveFile_TileEngine saveFile;
+
     //stores all tiles for drawing
     std::vector<std::pair<std::string, std::vector<Tile*> > > sortedTiles;
 

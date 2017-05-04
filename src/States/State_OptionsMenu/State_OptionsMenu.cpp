@@ -19,7 +19,7 @@ void State_OptionsMenu::displayTextures()
 	
 }
 
-void State_OptionsMenu::processInput(sf::Keyboard::Key key, bool isPressed)
+void State_OptionsMenu::processInput(std::u32string const& inputText)
 {
 	
 }

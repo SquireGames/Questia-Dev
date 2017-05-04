@@ -1,5 +1,5 @@
-#ifndef STATE_MAINMENU_H
-#define STATE_MAINMENU_H
+#ifndef STATE_MAPEDITOR_H
+#define STATE_MAPEDITOR_H
 
 #include "QuestiaEng/StateManager/State.h"
 
@@ -7,16 +7,16 @@
 
 #include "QuestiaEng/Engine.h"
 
-class State_MainMenu : public State
+class State_MapEditor : public State
 {
 public:
-	State_MainMenu();
+	State_MapEditor();
 	void init();
-	~State_MainMenu();
-
+	~State_MapEditor();
+	
 	void processInput(std::u32string const& inputText);
 	void update(sf::Time elapsedTime);
 	void displayTextures();
 };
 
-#endif // STATE_MAINMENU_H
+#endif // STATE_MAPEDITOR_H

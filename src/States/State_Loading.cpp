@@ -17,7 +17,7 @@ void State_Loading::init()
 	loadSprite.setPosition(1820, 980);
 	loadSprite.setOrigin(20, 20);
 }
-void State_Loading::processInput(sf::Keyboard::Key key, bool isPressed)
+void State_Loading::processInput(std::u32string const& inputText)
 {
 
 }

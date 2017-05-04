@@ -38,6 +38,7 @@ public:
 	~SaveFile_TileEngine();
 
 	///game
+	//loads the TileMap with tileKey and tileMap, loads texture either into Tile's in tileMap or ResourceManager texture TILESTORAGE
 	TileMap openMap(std::string mapName, sf::RenderWindow& window, TileMap::TextureMode textureMode, TileMap::TileMode tileMode);
 
 	///editor
@@ -47,12 +48,17 @@ public:
 	void changeMapDimensions(std::string mapName, unsigned int width, unsigned int height, unsigned int layers);
 	//saving map and tiles used
 	void saveMap(std::string mapName, const std::vector <int>& tileMap, unsigned int width, unsigned int height, unsigned int layers, const std::map<int, Tile>& tilePairs);
-
-	//helper
-	int getTile(unsigned int x, unsigned int y, unsigned int layer, unsigned int mapWidth, unsigned int mapHeight);
+	
 private:
 	std::vector <std::pair <int, std::string> > getTileLocations(std::string filePath, TileMap::TextureMode textureMode);
-	void loadTiles(std::vector <std::pair <int, std::string> >& tileLocations, TileMap& mapData, TileMap::TileMode tileMode, sf::RenderWindow& window);
+	//loads TileMap with tileKey, and if TileMode = Batch, loads tileAtlas texture into TILESTORAGE in resourceManager
+	void loadTiles(std::vector <std::pair <int, std::string> >& tileLocations, TileMap& mapData, sf::RenderWindow& window);
+	//loads chunks if in batch mode, validates all sprites in sprite mode
+	void loadRenderData(TileMap& mapData);
+	
+	//for getting coordinates
+	int getTile(unsigned int x, unsigned int y, unsigned int layer, TileMap& tileMap);
+	int getChunk(unsigned int x, unsigned int y, unsigned int layer, TileMap& tileMap);
 
 	///names of items
 	//mapInfo

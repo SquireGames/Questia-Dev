@@ -7,8 +7,8 @@
 #include "QuestiaEng/Utl/Controls/KeyAction.h"
 #include "QuestiaEng/Utl/SpriteSheet.h"
 
-#define SIZE_X 45*2
-#define SIZE_Y 70*2
+#define PLR_SIZE_X 45*2
+#define PLR_SIZE_Y 70*2
 
 enum class MovementControl
 {

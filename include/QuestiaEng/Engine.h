@@ -5,7 +5,6 @@
 #include <SFML/Graphics/Font.hpp>
 
 #include "QuestiaEng/ResourceManager/ResourceManager.h"
-#include "QuestiaEng/Data/InputBuffer.h"
 #include "QuestiaEng/GuiManager/GuiManager.h"
 #include "QuestiaEng/GuiManager/GuiLoader.h"
 #include "QuestiaEng/TileEngine/TileEngine.h"
@@ -35,7 +34,6 @@ public:
 	//interfaces
 	sf::RenderWindow&   win()   {return window;}
 	ResourceManager& 	res() 	{return resourceManager;}
-	InputBuffer& 		input() {return inputBuffer;}
 	GuiManager&			gui() 	{return guiManager;}
 	GuiLoader& 			guiLd() {return guiLoader;}
 	TileEngine&	 		tile()	{return tileEngine;}
@@ -57,7 +55,6 @@ private:
 
 	//manager
 	ResourceManager resourceManager;
-	InputBuffer inputBuffer;
 	GuiManager guiManager;
 	GuiLoader guiLoader;
 	TileEngine tileEngine;
@@ -68,6 +65,9 @@ private:
 
 	//text
 	sf::Font font;
+	
+	//input buffer
+	std::u32string inputBuffer;
 
 	//timing
 	sf::Clock clock;

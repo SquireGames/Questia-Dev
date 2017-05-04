@@ -43,11 +43,11 @@ private:
     ResourceManager* resourceManager = nullptr;
 
     //Depending on graphics card, game minimum being 512 x 512
-    int maxTextureSize = sf::Texture::getMaximumSize();
+    unsigned int maxTextureSize = sf::Texture::getMaximumSize();
     //used for checking layer space left
-    int maxWidth = 0;
-    int maxWidthCurrentLayer = 0;
-    int maxHeight = 0;
+    unsigned int maxWidth = 0;
+    unsigned int maxWidthCurrentLayer = 0;
+    unsigned int maxHeight = 0;
     //used for current layer space left
     int layers = 1;
 

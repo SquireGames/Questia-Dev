@@ -1,15 +1,16 @@
 #include "QuestiaDev/Application.h"
 
 Application::Application():
-	eng("Questia", 500)
+	eng("", 128)
 {
-	std::cout << "--------------------" << std::endl;
-	std::cout << "  Questia Executed  " << std::endl;
-	std::cout << "--------------------" << std::endl;
-
-	eng.state().reg("MainMenu", []() {return new State_MainMenu();});
-	eng.state().reg("Game",     []() {return new State_Game();});
-	eng.state().reg("Loading",  []() {return new State_Loading();});
+	//enforce windowed mode
+	eng.win().create(sf::VideoMode(1920, 1080), "Questia Editor", sf::Style::Default);
+	eng.win().setVerticalSyncEnabled(true);;
+	
+	eng.state().reg("MainMenu", 	[]() {return new State_MainMenu();});
+	eng.state().reg("OptionsMenu",  []() {return new State_OptionsMenu();});
+	eng.state().reg("MapEditor",    []() {return new State_MapEditor();});
+	eng.state().reg("Loading",  	[]() {return new State_Loading();});
 	
 	eng.state().transitionState("MainMenu", "Loading");
 	
@@ -18,11 +19,8 @@ Application::Application():
 
 Application::~Application()
 {
-	std::cout << "--------------------" << std::endl;
-	std::cout << " Questia Terminated " << std::endl;
-	std::cout << "--------------------" << std::endl;
-}
 
+}
 
 void Application::run()
 {

@@ -15,7 +15,7 @@ State_MainMenu::~State_MainMenu()
 	eng->gui().purgeButtons();
 }
 
-void State_MainMenu::processInput(ctr::Input key, bool isPressed)
+void State_MainMenu::processInput(std::u32string const& inputText)
 {
 	
 }
@@ -28,10 +28,9 @@ void State_MainMenu::update(sf::Time elapsedTime)
 		{
 			eng->terminate();
 		}
-		else if(eng->gui().isClicked("play"))
+		else if(eng->gui().isClicked("editMap"))
         {
-			//TODO change state outside of state itself
-			eng->state().transitionState("Game", "Loading");
+			eng->state().transitionState("MapEditor", "Loading");
         }
 	}
 }

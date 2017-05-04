@@ -14,7 +14,6 @@
 
 #include "QuestiaEng/TileEngine/TileMap.h"
 
-#include "QuestiaEng/Data/Data_Desktop.h"
 #include "QuestiaEng/ResourceManager/ResourceManager.h"
 
 #include "QuestiaEng/Utl/Utl.h"
@@ -28,62 +27,42 @@
 class TileEngine
 {
 public:
-    //ctor and dtor
-    TileEngine(sf::RenderWindow& _window, ResourceManager& _resourceManager);
-    ~TileEngine();
+	//ctor and dtor
+	TileEngine(sf::RenderWindow& _window, ResourceManager& _resourceManager);
+	~TileEngine();
 
-    void loadMap(std::string _mapName, TileMap::TextureMode textureMode, TileMap::TileMode tileMode);
+	void loadMap(std::string _mapName, TileMap::TextureMode textureMode, TileMap::TileMode tileMode);
+	void closeMap();
 
-    //draws chunks
-    void drawMap();
-    //draws separate tiles
-    void drawTiles();
+	void draw();
 
-    void setViewportSize(float width, float height);
+	void setViewportSize(float width, float height);
 
-    //set tiles drawn from player position
-    void setPosition(int x, int y);
-
-    //collision detection
-    //utl::Direction
-
+	//set tiles drawn from player position
+	void setPosition(int x, int y);
 protected:
-    ///map
-    //stores tiles
-    std::map <int, Tile> tileStorage;
+	//draws chunks
+	void drawMap();
+	//draws separate tiles
+	void drawTiles();
 
-    //stores map
-    std::vector <int> tileMap;
-    //stores map dimensions
-    unsigned int mapWidth = 0, mapHeight = 0, mapLayers = 0;
-    //largest tile in map for tile culling
-    unsigned int maxTileSize_x = 1, maxTileSize_y = 1;
+	//tiles fit on screen
+	unsigned int tileFit_x = (1920.f / 64.f) + 2; // +2 for transitioning tiles
+	unsigned int tileFit_y = (1080.f / 64.f) + 2; // +2 for transitioning tiles
+	
+	utl::Vector2i cameraPosition {utl::Vector2i(0,0)};
 
-    //tiles fit on screen
-    unsigned int tileFit_x = (1920.f / 64.f) + 2; // +2 for transitioning tiles
-    unsigned int tileFit_y = (1080.f / 64.f) + 2; // +2 for transitioning tiles
+	///helpers
+	//for map
+	int getTile(unsigned int x, unsigned int y, unsigned int layer);
+	int getChunk(unsigned int x, unsigned int y, unsigned int layer);
 
-    ///data
-    utl::Vector2i cameraPosition {utl::Vector2i(0,0)};
-    SaveFile_TileEngine saveFile;
-    std::string mapName = "nil";
+	///default
+	sf::RenderWindow& window;
+	ResourceManager& resourceManager;
 
-    ///helpers
-    //for map
-    int getTile(unsigned int x, unsigned int y, unsigned int layer);
-    int getChunk(unsigned int x, unsigned int y, unsigned int layer);
-
-    ///default
-    sf::RenderWindow &window;
-    ResourceManager& resourceManager;
-
-    ///chunk renderer
-    //chunk size is 8x8 tiles
-    std::vector <sf::VertexArray> chunkVector;
-    //chunks
-    unsigned int chunks_x = 0, chunks_y = 0;
-    //texture
-    sf::Texture* textureAtlas = nullptr;
+	//holds map
+	TileMap currentMap;
 };
 
 #endif // TILEENGINE_H

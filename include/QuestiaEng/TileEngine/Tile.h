@@ -41,7 +41,6 @@ public:
     //check collision
     utl::IntRect& getCollisionRect();
 
-
     //for 0,0 tiles
     utl::IntRect texturePosition = utl::IntRect(0,0,0,0);
     //(-1, -1) means sprite size

@@ -3,8 +3,8 @@
 
 #include "QuestiaEng/EntityManager/Entity/Entity_Obj/Entity_Coll/Entity_Coll.h"
 
-#define SIZE_X 50
-#define SIZE_Y 50
+#define CRATE_SIZE_X 50
+#define CRATE_SIZE_Y 50
 
 class Entity_Crate : public Entity_Coll
 {

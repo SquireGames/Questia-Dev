@@ -3,8 +3,8 @@
 
 #include "QuestiaEng/EntityManager/Entity/Entity_Obj/Entity_Obj.h"
 
-#define SIZE_X 50
-#define SIZE_Y 50
+#define ORB_SIZE_X 50
+#define ORB_SIZE_Y 50
 
 class Entity_Orb : public Entity_Obj
 {

@@ -4,7 +4,6 @@
 #include <string>
 
 #include "QuestiaEng/Utl/SaveFile.h"
-#include "QuestiaEng/StateManager/States/State_OptionsMenu/Option_Base.h"
 #include "QuestiaEng/Utl/FileData.h"
 #include "QuestiaEng/Utl/Utl.h"
 #include "QuestiaEng/Utl/Controls/Input.h"
@@ -15,7 +14,7 @@ public:
     SaveFile_Options();
     ~SaveFile_Options();
 
-    void saveOption(Option_Base* option, std::string optionName);
+    //void saveOption(Option_Base* option, std::string optionName);
     void writeOptions();
 
     void reloadOptions();

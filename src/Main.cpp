@@ -25,4 +25,5 @@ int main()
     {
         std::cout << std::endl << "Runtime exception: " << exc.what() <<std::endl;
     }
+	return 0;
 }

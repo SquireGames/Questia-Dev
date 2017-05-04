@@ -16,13 +16,11 @@ public:
 	State() = default;
 	virtual ~State();
 
-	//TODO make this a pure virtual function once legacy states are out!
-	virtual void init();
-	virtual void processInput(sf::Keyboard::Key key, bool isPressed) = 0;
+	virtual void init() = 0;
+	virtual void processInput(std::u32string const& inputText) = 0;
 	virtual void update(sf::Time elapsedTime) = 0;
 	virtual void displayTextures() = 0;
 
-	//TODO fully implement engine automation	
 protected:
 	Engine* eng = nullptr;
 	

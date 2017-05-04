@@ -15,7 +15,7 @@ public:
 
 	virtual void displayTextures();
 	virtual void init();
-	virtual void processInput(sf::Keyboard::Key key, bool isPressed);
+	virtual void processInput(std::u32string const& inputText);
 	virtual void update(sf::Time elapsedTime);
 
 private:
