@@ -61,6 +61,8 @@ public:
 	void purgeButtons();
     void setMousePosition(utl::Vector2f _mouseCoords);
     void setFont(sf::Font _buttonFont);
+	
+	sf::Font* getFont() {return &buttonFont;}
 
     template <class T>
     void setButton(std::string buttonName, gui::ButtonCharacteristic buttonChar, T value)
@@ -119,7 +121,7 @@ public:
     template <class T>
     void setListAtr(std::string listName, gui::ButtonCharacteristic buttonChar, T value)
     {
-        for(const std::string& groupIt : listMap[listName].second)
+        for(const std::string& groupIt : listMap[listName].elementGroups)
         {
             setGroupAtr(groupIt, buttonChar, value);
         }
@@ -127,7 +129,7 @@ public:
     template <class T>
     void setListAtr(gui::ButtonCharacteristic buttonChar, T value)
     {
-        for(const std::string& groupIt : listMap[currentListEdit].second)
+        for(const std::string& groupIt : listMap[currentListEdit].elementGroups)
         {
             setGroupAtr(groupIt, buttonChar, value);
         }
@@ -162,7 +164,15 @@ private:
     std::map <std::string, std::vector <std::string> > groupMap;
     std::map <std::string, std::vector <std::string> > groupTemplateMap;
 
-    std::map <std::string, std::pair <std::pair <std::string, std::pair <std::pair <int, int>, std::pair<int, int>>>,std::vector <std::string > > > listMap;
+	struct ListData
+	{
+		std::string groupTemplate = "NOTEMPLATE";
+		std::pair<int, int> position = std::make_pair(0,0);
+		std::pair<int, int> listSpacing = std::make_pair(0,0);
+		std::vector<std::string> elementGroups;
+	};
+
+    std::map <std::string, ListData> listMap;
 
     std::vector<std::string> loadedGuiPacks;
 

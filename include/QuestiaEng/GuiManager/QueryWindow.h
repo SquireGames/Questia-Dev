@@ -5,11 +5,12 @@
 #include <string>
 
 #include "QuestiaEng/GuiManager/GuiManager.h"
+#include "QuestiaEng/GuiManager/GuiElement.h"
 #include "QuestiaEng/GuiManager/GuiLoader.h"
 
 #include "QuestiaEng/Utl/Type/Vector2.h"
 
-class QueryWindow
+class QueryWindow : public GuiElement
 {
 public:
     QueryWindow(GuiManager& _guiManager, GuiLoader& _guiLoader);
@@ -30,6 +31,8 @@ public:
     std::string getChoice_string();
 
     void checkInput(bool isMouseClicked, char inputText);
+	//TODO update method 
+    void checkInput(bool isMouseClicked, char32_t inputText);
 
     bool isDone();
     bool isWindow(std::string question);

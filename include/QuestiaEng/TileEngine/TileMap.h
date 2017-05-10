@@ -25,12 +25,13 @@ public:
 	void setMaxTileSize_x(unsigned int p_maxTileSize_x) { if(!isInitialized) {maxTileSize_x = p_maxTileSize_x;}}
 	void setMaxTileSize_y(unsigned int p_maxTileSize_y) { if(!isInitialized) {maxTileSize_y = p_maxTileSize_y;}}
 	void setTextureMode(TextureMode mode)				{ if(!isInitialized) {textureMode = mode;}}
-	void setTileMode(TileMode mode)						{ if(!isInitialized) {tileMode = mode;}}
+	void setTileMode(TileMode mode)						{ if(!isInitialized) {tileMode = mode;}}	
+	void setLoaded()									{ if(!isInitialized) {isMapLoaded = true;}}	
 	//chunk rendering
 	void setAtlasTexture(std::string location, sf::Texture* atlas)	{ if(!isInitialized) {textureAtlasLocation = location, textureAtlas = atlas;}}
 	void setChunks_x(unsigned int x)								{ if(!isInitialized) {chunks_x = x;}}
 	void setChunks_y(unsigned int y)								{ if(!isInitialized) {chunks_y = y;}}
-	
+
 	std::string const& getName()		{return tileMapName;}
 	std::vector <int>& getTileMap() 	{return tileMap;}
 	std::map <int, Tile>& getTileKey() 	{return tileKey;}
@@ -43,6 +44,7 @@ public:
 	TileMode     getTileMode() 			{return tileMode;}
 	std::string  getAtlasLocation() 	{return textureAtlasLocation;}
 	sf::Texture* getAtlas() 			{return textureAtlas;}
+	bool isLoaded()						{return isMapLoaded;}
 	//chunk rendering
 	unsigned int getChunks_x()					{return chunks_x;}
 	unsigned int getChunks_y()					{return chunks_y;}
@@ -72,6 +74,7 @@ private:
 
 	//once map set, not modifyable
 	bool isInitialized = false;
+	bool isMapLoaded = false;
 };
 
 #endif // TILEMAP_H

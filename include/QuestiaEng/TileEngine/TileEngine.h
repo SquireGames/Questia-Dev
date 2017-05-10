@@ -38,13 +38,17 @@ public:
 
 	void setViewportSize(float width, float height);
 
-	//set tiles drawn from player position
 	void setPosition(int x, int y);
+	
+	bool isLoaded() {return currentMap.isLoaded();}
 protected:
 	//draws chunks
 	void drawMap();
 	//draws separate tiles
 	void drawTiles();
+	
+	//in charge of next map to load
+	std::string nextMap = std::string();
 
 	//tiles fit on screen
 	unsigned int tileFit_x = (1920.f / 64.f) + 2; // +2 for transitioning tiles
