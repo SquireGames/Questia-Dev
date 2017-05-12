@@ -7,7 +7,7 @@ namespace utl
 class Toggler
 {
 public:
-    Toggler(bool initValue = true);
+    Toggler(bool initValue = false);
     ~Toggler();
 
     bool toggle();

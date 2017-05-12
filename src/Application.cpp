@@ -4,7 +4,7 @@ Application::Application():
 	eng("", 128)
 {
 	//enforce windowed mode
-	eng.win().create(sf::VideoMode(1920, 1080), "Questia Editor", sf::Style::Default);
+	eng.win().create(sf::VideoMode(1920, 1080), "Questia Editor", sf::Style::Default, sf::ContextSettings(0,0,16));
 	eng.win().setVerticalSyncEnabled(true);;
 	
 	eng.state().reg("MainMenu", 	[]() {return new State_MainMenu();});

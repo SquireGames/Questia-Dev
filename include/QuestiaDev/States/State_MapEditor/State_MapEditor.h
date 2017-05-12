@@ -9,8 +9,9 @@
 #include "QuestiaEng/Utl/Controls/Input.h"
 
 #include "QuestiaEng/GuiManager/TabBar.h"
-//TODO remove, just tesing
-#include "QuestiaEng/GuiManager/MenuStack.h"
+
+#include "QuestiaEng/Utl/Toggler.h"
+#include "QuestiaEng/Utl/EdgeDetector.h"
 
 class State_MapEditor : public State
 {
@@ -18,21 +19,28 @@ public:
 	State_MapEditor();
 	void init();
 	~State_MapEditor();
-	
+
 	void processInput(std::u32string const& inputText);
 	void update(sf::Time elapsedTime);
 	void displayTextures();
-	
+
 private:
-	sf::View tileMapView;
+	utl::Vector2i pos;
+
 	sf::View overlayView;
-	
+	sf::View tileMapView;
+
 	TabBar upperTab;
-	int barID_file, barID_edit, barID_view;
 	
-	//TODO remove, testing
-	MenuStack stackA;
-	int stackID_A, stackID_B, stackID_C;
+	utl::Toggler tg_fullScreen;
+	utl::EdgeDetector key_fullScreen;
+	
+	utl::Toggler tg_grid;
+	
+	utl::Vector2i selectedTile;
+	
+	float mapZoomRatio = 1;
+	int moveSpeed = 5;
 	
 };
 

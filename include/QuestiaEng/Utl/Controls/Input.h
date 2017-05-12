@@ -86,10 +86,10 @@ enum class Input : int
 };
 
 //returns name of input
-std::string getInputName(const sf::Keyboard::Key& input);
-std::string getInputName(const int& input);
-std::string getInputName(const ctr::Input& input);
+std::string getInputName(const sf::Keyboard::Key input);
+std::string getInputName(const int input);
+std::string getInputName(const ctr::Input input);
 
-bool checkInput(const ctr::Input& input);
+bool checkInput(const ctr::Input input);
 }
 #endif // KEYBOARD_H

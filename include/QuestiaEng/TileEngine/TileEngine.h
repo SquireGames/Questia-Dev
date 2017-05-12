@@ -30,8 +30,10 @@ public:
 	//ctor and dtor
 	TileEngine(sf::RenderWindow& _window, ResourceManager& _resourceManager);
 	~TileEngine();
+	
+	friend class TileEngine_Editor;
 
-	void loadMap(std::string _mapName, TileMap::TextureMode textureMode, TileMap::TileMode tileMode);
+	void loadMap(std::string _mapName, TileMap::TextureMode textureMode = TileMap::TextureMode::Map, TileMap::TileMode tileMode = TileMap::TileMode::Batch);
 	void closeMap();
 
 	void draw();
@@ -41,7 +43,9 @@ public:
 	void setPosition(int x, int y);
 	
 	bool isLoaded() {return currentMap.isLoaded();}
-protected:
+	
+private:
+
 	//draws chunks
 	void drawMap();
 	//draws separate tiles

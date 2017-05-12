@@ -29,6 +29,7 @@ public:
     void createButton(std::string buttonName);
     void createButton(std::string buttonName, int layer);
     void createButton(std::string copyName, std::string originalName);
+	void createAlias(std::string alias, std::string buttonName);
     void createButtonTemplate(std::string buttonName);
     void createButtonTemplate(std::string buttonName, int layer);
     void createButtonTemplate(std::string copyName, std::string originalName);
@@ -53,7 +54,6 @@ public:
     void setListPosition(std::pair<int, int> position);
     std::string createListEntry(std::string listName);
     std::string createListEntry();
-
 
     bool isClicked(std::string buttonName);
     void drawButtons();
@@ -158,6 +158,7 @@ private:
     utl::Vector2f mouseCoords;
 
     std::map <std::string, Button*> buttonMap;
+	std::map <std::string, std::string> aliasMap;
     std::list <Button*> buttonDrawList;
     void placeInDrawList(Button* button);
 

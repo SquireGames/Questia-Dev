@@ -9,6 +9,7 @@
 #include "QuestiaEng/GuiManager/GuiHandler.h"
 #include "QuestiaEng/GuiManager/GuiLoader.h"
 #include "QuestiaEng/TileEngine/TileEngine.h"
+#include "QuestiaEng/TileEngine/TileEngine_Editor.h"
 #include "QuestiaEng/StateManager/StateManager.h"
 
 #include "QuestiaEng/SaveFile_Options.h"
@@ -32,6 +33,9 @@ public:
 	//used in a state
 	void terminate() {toTerminate = true;}
 
+	//input
+	MouseListener& 		mouse() {return mouseListener;}
+
 	//interfaces
 	sf::RenderWindow&   win()   {return window;}
 	ResourceManager& 	res() 	{return resourceManager;}
@@ -39,10 +43,8 @@ public:
 	GuiHandler& 		guiH()	{return guiHandler;}
 	GuiLoader& 			guiLd() {return guiLoader;}
 	TileEngine&	 		tile()	{return tileEngine;}
+	TileEngine_Editor&	tileEd(){return tileEngineEditor;}
 	StateManager& 		state() {return stateManager;}
-
-	//input
-	MouseListener& 		mouse() {return mouseListener;}
 
 private:
 	//options
@@ -64,6 +66,7 @@ private:
 	GuiHandler guiHandler;
 	GuiLoader guiLoader;
 	TileEngine tileEngine;
+	TileEngine_Editor tileEngineEditor;
 	StateManager stateManager;
 
 	//text
