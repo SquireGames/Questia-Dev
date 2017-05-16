@@ -100,7 +100,7 @@ struct Button
     ResourceManager& resourceManager;
     sf::Font& buttonFont;
 
-    // variables
+    //variables
     std::pair <int, int> buttonPosition;
     std::pair <int, int> buttonBounds;
     bool isCoordsChanged;
@@ -115,7 +115,7 @@ struct Button
     int buttonID;
     std::string buttonName = "none";
 
-    // holds attributes
+    //holds attributes
     std::map<std::string, RegularSprite*> heldSprites;
     std::map<std::string, ButtonText*> heldText;
     std::map<std::string, OverlaySprite*> heldOverlaySprites;

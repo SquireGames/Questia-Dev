@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <string>
+#include <functional>
 
 #include "QuestiaEng/GuiManager/GuiManager.h"
 #include "QuestiaEng/GuiManager/GuiElement.h"
@@ -13,63 +14,66 @@
 class QueryWindow : public GuiElement
 {
 public:
-    QueryWindow(GuiManager& _guiManager, GuiLoader& _guiLoader);
-    ~QueryWindow();
+	QueryWindow();
+	~QueryWindow();
 
-    enum class QueryType {Input_int, Input_string, Choice_string};
+	enum class QueryType {Input_int, Input_string, Choice_string};
 
-    void addQuery(std::string queryID, std::string queryQuestion, QueryType queryType);
-    void initQuery(std::string windowName);
+	void addQuery(std::string queryID, std::string queryQuestion, QueryType queryType);
+	void init(std::string windowName, GuiManager& pGuiManager, GuiLoader& guiLoader, std::function<void()> handle);
+	//add choice after init was called
+	void postAddChoice(std::string queryID, std::string choice);
 
-    void setActive(bool isActive);
-    bool isActive();
+	void setActive(bool isActive);
+	bool isActive();
 
-    void resetQueries();
+	void resetQueries();
 
-    int getResult_int(std::string queryID);
-    std::string getResult_string(std::string queryID);
-    std::string getChoice_string();
+	int getResult_int(std::string queryID);
+	std::string getResult_string(std::string queryID);
+	std::string getChoice_string();
 
-    void checkInput(bool isMouseClicked, char inputText);
-	//TODO update method 
-    void checkInput(bool isMouseClicked, char32_t inputText);
+	//GuiElement
+	void handleInput(std::u32string& input);
+	void update(MouseListener& mouse);
 
-    bool isDone();
-    bool isWindow(std::string question);
+	bool isDone();
+	bool isWindow(std::string question);
 
 private:
-    GuiManager& guiManager;
-    GuiLoader& guiLoader;
+	GuiManager* guiManager;
 
-    bool isWindowActive = false;
-    bool isWindowDone = false;
-    bool scrollWindow = false;
-    int scrollAmount = 0;
+	std::function<void()> handleRes;
 
-    struct Query
-    {
-        Query(std::string _queryQuestion, QueryType _queryType):queryQuestion(_queryQuestion), queryType(_queryType){}
+	bool isWindowActive = false;
+	bool isWindowDone = false;
+	bool scrollWindow = false;
+	int scrollAmount = 0;
 
-        std::string buttonName;
+	struct Query
+	{
+		Query(std::string _queryQuestion, QueryType _queryType):queryQuestion(_queryQuestion), queryType(_queryType) {}
 
-        std::string queryQuestion;
-        QueryType queryType;
-        std::string queryAnswer;
-    };
+		std::string buttonName;
 
-    int windowSize_x = 700;
-    int windowSize_y = 100;
-    int windowPos_x =  610;
-    int windowPos_y =  500;
+		std::string queryQuestion;
+		QueryType queryType;
+		std::string queryAnswer;
+	};
 
-    int querySelection = -1;
+	int windowSize_x = 700;
+	int windowSize_y = 100;
+	int windowPos_x =  610;
+	int windowPos_y =  500;
 
-    std::string groupName;
-    std::string button_windowBox;
-    std::string button_closeButton;
-    std::string button_submitButton;
+	int querySelection = -1;
 
-    std::vector<std::pair<std::string, Query>> queryValues;
+	std::string groupName;
+	std::string button_windowBox;
+	std::string button_closeButton;
+	std::string button_submitButton;
+
+	std::vector<std::pair<std::string, Query>> queryValues;
 };
 
 #endif // QUERYWINDOW_H

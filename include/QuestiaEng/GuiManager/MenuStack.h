@@ -15,6 +15,8 @@ public:
 	int addEntry(std::string text, std::string buttonName);
 	void init(std::string stackName, int x, int y, GuiManager& pGuiManager, GuiLoader& guiLoader);
 	
+	unsigned int size() {return entries.size();}
+	
 	void handleInput(std::u32string& input);
 	//automatically called if MenuStack is registered into GuiHandler
 	void update(MouseListener& mouse);

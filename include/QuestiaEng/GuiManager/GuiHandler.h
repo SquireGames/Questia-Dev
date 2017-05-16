@@ -13,13 +13,15 @@ public:
 	~GuiHandler();
 
 	void reg(GuiElement* guiElement);
-	void update();
+	void regInput(GuiElement* guiElement);
+	void update(std::u32string& input);
 	void clear();
 
 private:
 	MouseListener& mouse;
 
 	std::vector<GuiElement*> elements;
+	std::vector<GuiElement*> inputs;
 };
 
 #endif // GUIHANDLER_H

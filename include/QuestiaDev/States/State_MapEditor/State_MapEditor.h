@@ -9,6 +9,7 @@
 #include "QuestiaEng/Utl/Controls/Input.h"
 
 #include "QuestiaEng/GuiManager/TabBar.h"
+#include "QuestiaEng/GuiManager/QueryWindow.h"
 
 #include "QuestiaEng/Utl/Toggler.h"
 #include "QuestiaEng/Utl/EdgeDetector.h"
@@ -25,12 +26,22 @@ public:
 	void displayTextures();
 
 private:
-	utl::Vector2i pos;
+	enum class Mode {TileMap, TileChoice} mode = Mode::TileMap;
+	enum class Selection {none, tile, span} selection = Selection::tile;
+
+	utl::Vector2i mapPos;
+	utl::Vector2i sheetPos;
 
 	sf::View overlayView;
 	sf::View tileMapView;
+	sf::View tileSheetView;
 
-	TabBar upperTab;
+	TabBar mainTab;
+	TabBar mapEditTab;
+	
+	QueryWindow qNewMap;
+	QueryWindow qOpenMap;
+	QueryWindow qSaveMapAs;
 	
 	utl::Toggler tg_fullScreen;
 	utl::EdgeDetector key_fullScreen;
@@ -38,9 +49,11 @@ private:
 	utl::Toggler tg_grid;
 	
 	utl::Vector2i selectedTile;
+	int tileID = -7;
 	
-	float mapZoomRatio = 1;
 	int moveSpeed = 5;
+	float mapZoomRatio = 1;
+	float sheetZoomRatio = 1;
 	
 };
 
