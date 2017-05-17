@@ -30,7 +30,7 @@ public:
 
 	void setActivity(bool isActive);
 	bool isActive() {return isTabBarActive;}
-	bool isHovered() {return isTabBarHovered;}
+	bool isHovered() {return isTabBarHovered && isTabBarActive;}
 
 private:
 	GuiManager* guiManager;

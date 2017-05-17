@@ -12,6 +12,7 @@ State_MapEditor::State_MapEditor():
 	, key_fullScreen(false)
 	, tg_grid(true)
 	, selectedTile(-1, -1)
+	, selectedSpan(-1, -1)
 {
 
 }
@@ -49,7 +50,7 @@ void State_MapEditor::init()
 	qNewMap.addQuery("map_x", "Width: ",  QueryWindow::QueryType::Input_int);
 	qNewMap.addQuery("map_y", "Height: ", QueryWindow::QueryType::Input_int);
 	qNewMap.addQuery("map_z", "Layers: ", QueryWindow::QueryType::Input_int);
-	qNewMap.init("New Map", eng->gui(), eng->guiLd(), [&]()
+	qNewMap.init("New Map", eng->gui(), &eng->guiLd(), [&]()
 	{
 		std::string mapName;
 		int x, y, z;
@@ -64,7 +65,8 @@ void State_MapEditor::init()
 		eng->tileEd().closeMap();
 		eng->tileEd().loadMap(mapName);
 
-		qOpenMap.postAddChoice("choice", mapName);
+		qOpenMap.addQuery("choice", mapName, QueryWindow::QueryType::Choice_string);
+		qOpenMap.reInit();
 		qNewMap.resetQueries();
 	});
 	eng->guiH().reg(&qNewMap);
@@ -74,7 +76,7 @@ void State_MapEditor::init()
 	{
 		qOpenMap.addQuery("choice", it, QueryWindow::QueryType::Choice_string);
 	}
-	qOpenMap.init("Open Map", eng->gui(), eng->guiLd(), [&]()
+	qOpenMap.init("Open Map", eng->gui(), &eng->guiLd(), [&]()
 	{
 		eng->tileEd().closeMap();
 		eng->tileEd().loadMap(qOpenMap.getChoice_string());
@@ -83,7 +85,7 @@ void State_MapEditor::init()
 	eng->guiH().regInput(&qOpenMap);
 	//Save map as
 	qSaveMapAs.addQuery("map_name", "Map Name: ",QueryWindow::QueryType::Input_string);
-	qSaveMapAs.init("Save As",  eng->gui(), eng->guiLd(), [&]()
+	qSaveMapAs.init("Save As",  eng->gui(), &eng->guiLd(), [&]()
 	{
 		eng->tileEd().changeMapName(qSaveMapAs.getResult_string("map_name"));
 		eng->tileEd().createMap(qSaveMapAs.getResult_string("map_name"), eng->tileEd().getMapWidth(), eng->tileEd().getMapHeight(), eng->tileEd().getMapLayers());
@@ -125,19 +127,18 @@ void State_MapEditor::update(sf::Time elapsedTime)
 	{
 	case 1:
 		currentView.zoom(0.80);
-		eng->tileEd().setViewportSize(currentView.getSize().x, currentView.getSize().y);
 		break;
 	case -1:
 		currentView.zoom(1.20);
-		eng->tileEd().setViewportSize(currentView.getSize().x, currentView.getSize().y);
 		break;
 	default:
 		break;
 	}
+	eng->tileEd().setViewportSize(currentView.getSize().x, currentView.getSize().y);
 	zoomRatio = (currentView.getSize().x / 1920.f);
 
 	//move around map with wasd keys
-	int moveDistance = moveSpeed * std::max(0.5f, zoomRatio);
+	int moveDistance = moveSpeed * std::max(0.5f, zoomRatio) * !isQueryHovered();
 	if(ctr::checkInput(ctr::Input::W))
 	{
 		pos.y -= moveDistance;
@@ -173,19 +174,30 @@ void State_MapEditor::update(sf::Time elapsedTime)
 		//handle gui input
 		if(eng->gui().isClicked("newMap"))
 		{
-			qNewMap.setActive(true);
+			if(!isQueryHovered())
+			{
+				qNewMap.setActive(true);
+			}
+
 		}
 		else if(eng->gui().isClicked("openMap"))
 		{
-			qOpenMap.setActive(true);
+			if(!isQueryHovered())
+			{
+				tileID = -7;
+				qOpenMap.setActive(true);
+			}
 		}
 		else if(eng->gui().isClicked("save"))
 		{
-
+			eng->tileEd().overrideMap();
 		}
 		else if(eng->gui().isClicked("saveAs"))
 		{
-			qSaveMapAs.setActive(true);
+			if(!isQueryHovered())
+			{
+				qSaveMapAs.setActive(true);
+			}
 		}
 		else if(eng->gui().isClicked("toggleGrid"))
 		{
@@ -201,30 +213,80 @@ void State_MapEditor::update(sf::Time elapsedTime)
 			mode = Mode::TileChoice;
 			mapEditTab.setActivity(false);
 		}
-		//handle tile selection
-		else
+		else if(eng->gui().isClicked("sel_none"))
 		{
-			switch(mode)
+			selection = Selection::none;
+		}
+		else if(eng->gui().isClicked("sel_tile"))
+		{
+			selection = Selection::tile;
+		}
+		else if(eng->gui().isClicked("sel_span"))
+		{
+			selection = Selection::span;
+		}
+	}
+	if(!isGuiHovered())
+	{
+		//handle tile selection
+		switch(mode)
+		{
+		case Mode::TileMap:
 			{
-			case Mode::TileMap:
+				switch(selection)
 				{
-					switch(selection)
+				case Selection::none:
+					break;
+				case Selection::tile:
 					{
-					case Selection::none:
-						break;
-					case Selection::tile:
-						break;
-					case Selection::span:
-						break;
+						if(eng->mouse().isMouseHeld(ctr::Input::LMouse))
+						{
+							eng->tileEd().replaceTile(tileID, selectedTile.x, selectedTile.y, 0);
+						}
+					}
+					break;
+				case Selection::span:
+					{
+						if(eng->mouse().isMousePressed(ctr::Input::LMouse))
+						{
+							selectedSpan = selectedTile;
+							wasHeld = true;
+						}
+						if(eng->mouse().isMouseReleased(ctr::Input::LMouse) && wasHeld)
+						{
+							for(int i_x = selectedSpan.x; i_x != selectedTile.x + ((selectedSpan.x < selectedTile.x) ? 1 : -1); i_x += (selectedSpan.x < selectedTile.x) ? 1 : -1)
+							{
+								for(int i_y = selectedSpan.y; i_y != selectedTile.y + ((selectedSpan.y < selectedTile.y) ? 1 : -1); i_y += (selectedSpan.y < selectedTile.y) ? 1 : -1)
+								{
+									eng->tileEd().replaceTile(tileID, i_x, i_y, 0);
+								}
+							}
+							wasHeld = false;
+						}
+						if(!eng->mouse().isMouseHeld(ctr::Input::LMouse))
+						{
+							wasHeld = false;
+						}
+					}
+					break;
+				}
+			}
+			break;
+		case Mode::TileChoice:
+			{
+				if(eng->mouse().isMousePressed(ctr::Input::LMouse))
+				{
+					if(eng->tileEd().getTile_tileState(selectedTile.x, selectedTile.y) != nullptr)
+					{
+						tileID = eng->tileEd().getTileID(eng->tileEd().getTile_tileState(selectedTile.x, selectedTile.y)->source);
 					}
 				}
-				break;
-			case Mode::TileChoice:
-				break;
 			}
+			break;
 		}
 	}
 }
+
 void State_MapEditor::displayTextures()
 {
 	switch(mode)
@@ -233,16 +295,47 @@ void State_MapEditor::displayTextures()
 		eng->win().setView(tileMapView);
 		eng->tileEd().draw();
 		eng->tileEd().drawGridLines();
-		if(eng->tileEd().isLoaded() && !mainTab.isHovered()) {eng->tileEd().hoverTile(selectedTile.x, selectedTile.y);}
+		{
+			if(!eng->tileEd().isLoaded() || isGuiHovered()) {break;}
+			switch(selection)
+			{
+			case Selection::none:
+				break;
+			case Selection::tile:
+				eng->tileEd().hoverTile(selectedTile.x, selectedTile.y);
+				break;
+			case Selection::span:
+				{
+					if(eng->mouse().isMouseHeld(ctr::Input::LMouse))
+					{
+						eng->tileEd().hoverSpan(selectedTile.x, selectedTile.y,
+						                        selectedSpan.x - selectedTile.x + (selectedSpan.x - selectedTile.x >= 0) - (selectedSpan.x - selectedTile.x < 0),
+						                        selectedSpan.y - selectedTile.y + (selectedSpan.y - selectedTile.y >= 0) - (selectedSpan.y - selectedTile.y < 0));
+					}
+				}
+				break;
+			}
+		}
+
 		break;
 	case Mode::TileChoice:
 		eng->win().setView(tileSheetView);
 		eng->tileEd().drawTiles(*eng->gui().getFont());
-		if(eng->tileEd().isLoaded() && !mainTab.isHovered()) {eng->tileEd().hoverTile(selectedTile.x, selectedTile.y);}
+		if(eng->tileEd().isLoaded() && !isGuiHovered()) {eng->tileEd().hoverTile(selectedTile.x, selectedTile.y);}
 		break;
 	}
 
 	//draw the gui
 	eng->win().setView(overlayView);
 	eng->gui().drawButtons();
+}
+
+bool State_MapEditor::isGuiHovered()
+{
+	return mainTab.isHovered() || mapEditTab.isHovered() || isQueryHovered();
+}
+
+bool State_MapEditor::isQueryHovered()
+{
+	return qNewMap.isActive() || qOpenMap.isActive() || qSaveMapAs.isActive();
 }

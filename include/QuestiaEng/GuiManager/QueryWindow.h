@@ -20,9 +20,8 @@ public:
 	enum class QueryType {Input_int, Input_string, Choice_string};
 
 	void addQuery(std::string queryID, std::string queryQuestion, QueryType queryType);
-	void init(std::string windowName, GuiManager& pGuiManager, GuiLoader& guiLoader, std::function<void()> handle);
-	//add choice after init was called
-	void postAddChoice(std::string queryID, std::string choice);
+	void init(std::string windowName, GuiManager& pGuiManager, GuiLoader* guiLoader, std::function<void()> handle);
+	void reInit();
 
 	void setActive(bool isActive);
 	bool isActive();

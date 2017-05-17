@@ -57,11 +57,15 @@ public:
 
     bool isClicked(std::string buttonName);
     void drawButtons();
-    void deleteButton(std::string buttonName);
-	void purgeButtons();
-    void setMousePosition(utl::Vector2f _mouseCoords);
-    void setFont(sf::Font _buttonFont);
 	
+    void deleteButton(std::string buttonName);
+    void deleteGroup(std::string groupName);
+    void deleteList(std::string listName);
+	void purgeButtons();
+	
+    void setMousePosition(utl::Vector2f _mouseCoords);
+    bool isLoadedGuiPack(std::string guiPack);
+    void setFont(sf::Font _buttonFont);
 	sf::Font* getFont() {return &buttonFont;}
 
     template <class T>
@@ -84,7 +88,6 @@ public:
     {
         buttonMap[currentButtonEdit]->setButtonAtr(currentButtonAtrEdit, atrChar, value);
     }
-
 
     template <class T>
     void setGroupAtr(std::string groupName, gui::ButtonCharacteristic buttonChar, T value)
@@ -133,17 +136,6 @@ public:
         {
             setGroupAtr(groupIt, buttonChar, value);
         }
-    }
-
-    bool isLoadedGuiPack(std::string guiPack)
-    {
-        if(std::find(loadedGuiPacks.begin(), loadedGuiPacks.end(), guiPack) == loadedGuiPacks.end())
-        {
-            std::cout << "GUIMANAGER: Attempting to load GuiPack - " << guiPack << std::endl;
-            loadedGuiPacks.push_back(guiPack);
-            return false;
-        }
-        return true;
     }
 
 private:

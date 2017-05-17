@@ -26,6 +26,9 @@ public:
 	void displayTextures();
 
 private:
+	bool isGuiHovered();
+	bool isQueryHovered();
+
 	enum class Mode {TileMap, TileChoice} mode = Mode::TileMap;
 	enum class Selection {none, tile, span} selection = Selection::tile;
 
@@ -49,6 +52,8 @@ private:
 	utl::Toggler tg_grid;
 	
 	utl::Vector2i selectedTile;
+	utl::Vector2i selectedSpan;
+	bool wasHeld = false;
 	int tileID = -7;
 	
 	int moveSpeed = 5;
