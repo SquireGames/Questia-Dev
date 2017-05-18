@@ -6,7 +6,7 @@
 #include <functional>
 
 #include "QuestiaEng/GuiManager/GuiManager.h"
-#include "QuestiaEng/GuiManager/GuiElement.h"
+#include "QuestiaEng/GuiManager/GuiElement/GuiElement.h"
 #include "QuestiaEng/GuiManager/GuiLoader.h"
 
 #include "QuestiaEng/Utl/Type/Vector2.h"

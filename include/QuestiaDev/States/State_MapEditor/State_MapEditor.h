@@ -8,8 +8,9 @@
 #include "QuestiaEng/StateManager/State.h"
 #include "QuestiaEng/Utl/Controls/Input.h"
 
-#include "QuestiaEng/GuiManager/TabBar.h"
-#include "QuestiaEng/GuiManager/QueryWindow.h"
+#include "QuestiaEng/GuiManager/GuiElement/TabBar.h"
+#include "QuestiaEng/GuiManager/GuiElement/QueryWindow.h"
+#include "QuestiaEng/GuiManager/GuiElement/StatusBar.h"
 
 #include "QuestiaEng/Utl/Toggler.h"
 #include "QuestiaEng/Utl/EdgeDetector.h"
@@ -42,6 +43,8 @@ private:
 	TabBar mainTab;
 	TabBar mapEditTab;
 	
+	StatusBar mapStatus;
+	
 	QueryWindow qNewMap;
 	QueryWindow qOpenMap;
 	QueryWindow qSaveMapAs;
@@ -55,6 +58,7 @@ private:
 	utl::Vector2i selectedSpan;
 	bool wasHeld = false;
 	int tileID = -7;
+	int selectedLayer = -1;
 	
 	int moveSpeed = 5;
 	float mapZoomRatio = 1;

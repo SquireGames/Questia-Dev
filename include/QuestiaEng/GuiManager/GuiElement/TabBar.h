@@ -5,9 +5,9 @@
 #include "SFML/Graphics/Text.hpp"
 
 #include "QuestiaEng/GuiManager/GuiManager.h"
-#include "QuestiaEng/GuiManager/GuiElement.h"
+#include "QuestiaEng/GuiManager/GuiElement/GuiElement.h"
 #include "QuestiaEng/GuiManager/GuiLoader.h"
-#include "QuestiaEng/GuiManager/MenuStack.h"
+#include "QuestiaEng/GuiManager/GuiElement/MenuStack.h"
 
 class TabBar : public GuiElement
 {

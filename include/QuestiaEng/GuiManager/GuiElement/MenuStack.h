@@ -3,7 +3,7 @@
 
 #include "QuestiaEng/Utl/Utl.h"
 #include "QuestiaEng/GuiManager/GuiManager.h"
-#include "QuestiaEng/GuiManager/GuiElement.h"
+#include "QuestiaEng/GuiManager/GuiElement/GuiElement.h"
 #include "QuestiaEng/GuiManager/GuiLoader.h"
 
 class MenuStack : public GuiElement

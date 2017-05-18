@@ -8,6 +8,7 @@ State_MapEditor::State_MapEditor():
 	, tileSheetView(sf::FloatRect(1920/2,1080/2,1920,1080))
 	, mainTab(utl::Direction::up)
 	, mapEditTab(utl::Direction::up, 22)
+	, mapStatus(utl::Direction::down)
 	, tg_fullScreen(true)
 	, key_fullScreen(false)
 	, tg_grid(true)
@@ -25,9 +26,11 @@ void State_MapEditor::init()
 	mainTab.addEntry("Open Map", "openMap");
 	mainTab.addEntry("Save", "save");
 	mainTab.addEntry("Save as", "saveAs");
+	/*
 	mainTab.addTab("Edit");
 	mainTab.addEntry("Undo", "undo");
 	mainTab.addEntry("Redo", "redo");
+	*/
 	mainTab.addTab("View");
 	mainTab.addEntry("Toggle Grid", "toggleGrid");
 	mainTab.addSpace(50);
@@ -40,9 +43,24 @@ void State_MapEditor::init()
 	mapEditTab.addEntry("None", "sel_none");
 	mapEditTab.addEntry("Single Tile", "sel_tile");
 	mapEditTab.addEntry("Span", "sel_span");
+	mapEditTab.addEntry("Erasor", "sel_eras");
 	mapEditTab.init("eTab", eng->gui(), eng->guiLd());
 	mapEditTab.setBelow(mainTab);
 	eng->guiH().reg(&mapEditTab);
+	
+	mapStatus.track("x: ", 0, 45);
+	mapStatus.track("y: ", 0, 45);
+	mapStatus.track("layer: ", "none", 20);
+	mapStatus.addSpace(100);
+	mapStatus.track("selected tile: ", "none", 200);
+	mapStatus.addSpace(200);
+	mapStatus.track("width: ", 0, 45);
+	mapStatus.track("height: ", 0, 45);
+	mapStatus.track("layers: ", 0, 45);
+	mapStatus.addSpace(200);
+	mapStatus.track("mapName: ", "none", 45);
+	mapStatus.init("mStats", eng->gui(), eng->guiLd());
+	eng->guiH().reg(&mapStatus);
 
 	///Queries
 	//New map
@@ -59,11 +77,16 @@ void State_MapEditor::init()
 		mapName = qNewMap.getResult_string("map_name");
 		x = std::max(1, qNewMap.getResult_int("map_x"));
 		y = std::max(1, qNewMap.getResult_int("map_y"));
-		z = std::max(1, qNewMap.getResult_int("map_z"));
+		z = std::min(9, std::max(1, qNewMap.getResult_int("map_z")));
 
 		eng->tileEd().createMap(mapName, x, y, z);
 		eng->tileEd().closeMap();
 		eng->tileEd().loadMap(mapName);
+		
+		mapStatus.updateVal("width: ", x);
+		mapStatus.updateVal("height: ", y);
+		mapStatus.updateVal("layers: ", z);
+		mapStatus.updateVal("mapName: ", mapName);
 
 		qOpenMap.addQuery("choice", mapName, QueryWindow::QueryType::Choice_string);
 		qOpenMap.reInit();
@@ -80,6 +103,11 @@ void State_MapEditor::init()
 	{
 		eng->tileEd().closeMap();
 		eng->tileEd().loadMap(qOpenMap.getChoice_string());
+		
+		mapStatus.updateVal("width: ", eng->tileEd().getMapWidth());
+		mapStatus.updateVal("height: ", eng->tileEd().getMapHeight());
+		mapStatus.updateVal("layers: ", eng->tileEd().getMapLayers());
+		mapStatus.updateVal("mapName: ", qOpenMap.getChoice_string());
 	});
 	eng->guiH().reg(&qOpenMap);
 	eng->guiH().regInput(&qOpenMap);
@@ -90,6 +118,8 @@ void State_MapEditor::init()
 		eng->tileEd().changeMapName(qSaveMapAs.getResult_string("map_name"));
 		eng->tileEd().createMap(qSaveMapAs.getResult_string("map_name"), eng->tileEd().getMapWidth(), eng->tileEd().getMapHeight(), eng->tileEd().getMapLayers());
 		eng->tileEd().overrideMap();
+		qOpenMap.addQuery("choice", qSaveMapAs.getResult_string("map_name"), QueryWindow::QueryType::Choice_string);
+		qOpenMap.reInit();
 		qSaveMapAs.resetQueries();
 	});
 	eng->guiH().reg(&qSaveMapAs);
@@ -110,12 +140,31 @@ void State_MapEditor::processInput(std::u32string const& inputText)
 
 void State_MapEditor::update(sf::Time elapsedTime)
 {
-	//tilde to toggle fullscreen map view
-	if(key_fullScreen.risingEdge(ctr::checkInput(ctr::Input::Tilde)))
+	//tab to toggle fullscreen map view
+	if(key_fullScreen.risingEdge(ctr::checkInput(ctr::Input::Tab)) && !isGuiHovered())
 	{
 		mainTab.setActivity(tg_fullScreen.toggle());
+		mapEditTab.setActivity(tg_fullScreen.getState() && mode == Mode::TileMap);
+		mapStatus.setActivity(tg_fullScreen.getState());
 	}
-
+	//select layer
+	for(int keyIt = 0; (keyIt < 8) && (keyIt < (int)eng->tileEd().getMapLayers()) && !isGuiHovered(); keyIt++)
+	{
+		ctr::Input key = static_cast<ctr::Input>((int)ctr::Input::Num1 + keyIt);
+		if(ctr::checkInput(key))
+		{
+			selectedLayer = keyIt;
+			mapStatus.updateVal("layer: ", selectedLayer + 1);
+			break;
+		}
+	}
+	if(ctr::checkInput(ctr::Input::Tilde) && !isGuiHovered())
+	{
+		selectedLayer = -1;
+		mapStatus.updateVal("layer: ", "none");
+		eng->tileEd().resetTileAlpha();
+	}
+		
 	//differences between mapView and sheetView
 	sf::View& currentView = (mode == Mode::TileMap) ? tileMapView : tileSheetView;
 	float& zoomRatio = (mode == Mode::TileMap) ? mapZoomRatio : sheetZoomRatio;
@@ -167,6 +216,9 @@ void State_MapEditor::update(sf::Time elapsedTime)
 	mousePos.x = std::floor(mousePos.x);
 	mousePos.y = std::floor(mousePos.y);
 	selectedTile = utl::Vector2i((int)mousePos.x, (int)mousePos.y);
+	
+	mapStatus.updateVal("x: ", selectedTile.x);
+	mapStatus.updateVal("y: ", selectedTile.y);
 
 	//handle gui
 	if(eng->mouse().isMousePressed(ctr::Input::LMouse))
@@ -212,6 +264,7 @@ void State_MapEditor::update(sf::Time elapsedTime)
 		{
 			mode = Mode::TileChoice;
 			mapEditTab.setActivity(false);
+			eng->tileEd().resetTileAlpha();
 		}
 		else if(eng->gui().isClicked("sel_none"))
 		{
@@ -224,6 +277,11 @@ void State_MapEditor::update(sf::Time elapsedTime)
 		else if(eng->gui().isClicked("sel_span"))
 		{
 			selection = Selection::span;
+		}
+		else if(eng->gui().isClicked("sel_eras"))
+		{
+			tileID = 0;
+			mapStatus.updateVal("selected tile: ", "Erasor");
 		}
 	}
 	if(!isGuiHovered())
@@ -239,9 +297,9 @@ void State_MapEditor::update(sf::Time elapsedTime)
 					break;
 				case Selection::tile:
 					{
-						if(eng->mouse().isMouseHeld(ctr::Input::LMouse))
+						if(eng->mouse().isMouseHeld(ctr::Input::LMouse) && (selectedLayer >= 0))
 						{
-							eng->tileEd().replaceTile(tileID, selectedTile.x, selectedTile.y, 0);
+							eng->tileEd().replaceTile(tileID, selectedTile.x, selectedTile.y, selectedLayer);
 						}
 					}
 					break;
@@ -252,13 +310,13 @@ void State_MapEditor::update(sf::Time elapsedTime)
 							selectedSpan = selectedTile;
 							wasHeld = true;
 						}
-						if(eng->mouse().isMouseReleased(ctr::Input::LMouse) && wasHeld)
+						if(eng->mouse().isMouseReleased(ctr::Input::LMouse) && wasHeld && (selectedLayer >= 0))
 						{
 							for(int i_x = selectedSpan.x; i_x != selectedTile.x + ((selectedSpan.x < selectedTile.x) ? 1 : -1); i_x += (selectedSpan.x < selectedTile.x) ? 1 : -1)
 							{
 								for(int i_y = selectedSpan.y; i_y != selectedTile.y + ((selectedSpan.y < selectedTile.y) ? 1 : -1); i_y += (selectedSpan.y < selectedTile.y) ? 1 : -1)
 								{
-									eng->tileEd().replaceTile(tileID, i_x, i_y, 0);
+									eng->tileEd().replaceTile(tileID, i_x, i_y, selectedLayer);
 								}
 							}
 							wasHeld = false;
@@ -279,6 +337,7 @@ void State_MapEditor::update(sf::Time elapsedTime)
 					if(eng->tileEd().getTile_tileState(selectedTile.x, selectedTile.y) != nullptr)
 					{
 						tileID = eng->tileEd().getTileID(eng->tileEd().getTile_tileState(selectedTile.x, selectedTile.y)->source);
+						mapStatus.updateVal("selected tile: ", eng->tileEd().getTile_tileState(selectedTile.x, selectedTile.y)->source.substr(23));
 					}
 				}
 			}
@@ -293,7 +352,34 @@ void State_MapEditor::displayTextures()
 	{
 	case Mode::TileMap:
 		eng->win().setView(tileMapView);
-		eng->tileEd().draw();
+		{
+			if(selectedLayer < 0)
+			{
+				eng->tileEd().draw();
+			}
+			else
+			{
+				for(int layer = 0; layer < (int) eng->tileEd().getMapLayers(); layer++)
+				{
+					if(layer < selectedLayer)
+					{
+						eng->tileEd().drawLayer(layer, 50);
+					}
+					else if(layer == selectedLayer)
+					{
+						eng->tileEd().drawLayer(layer, 100);
+					}
+					else if(layer == selectedLayer + 1)
+					{
+						eng->tileEd().drawLayer(layer, 25);
+					}
+					else if(layer == selectedLayer + 2)
+					{
+						eng->tileEd().drawLayer(layer, 7);
+					}
+				}
+			}
+		}
 		eng->tileEd().drawGridLines();
 		{
 			if(!eng->tileEd().isLoaded() || isGuiHovered()) {break;}
@@ -316,7 +402,6 @@ void State_MapEditor::displayTextures()
 				break;
 			}
 		}
-
 		break;
 	case Mode::TileChoice:
 		eng->win().setView(tileSheetView);
@@ -325,7 +410,7 @@ void State_MapEditor::displayTextures()
 		break;
 	}
 
-	//draw the gui
+//draw the gui
 	eng->win().setView(overlayView);
 	eng->gui().drawButtons();
 }

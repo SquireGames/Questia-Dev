@@ -45,6 +45,7 @@ public:
 	//creating map
 	bool createMap(std::string mapName, unsigned int width, unsigned int height, unsigned int layers);
 	TileMap editMap(std::string mapName, sf::RenderWindow& window);
+	//TODO implement this
 	void changeMapDimensions(std::string mapName, unsigned int width, unsigned int height, unsigned int layers);
 	//saving map and tiles used
 	void saveMap(std::string mapName, const std::vector <int>& tileMap, unsigned int width, unsigned int height, unsigned int layers, const std::map<int, Tile>& tilePairs);

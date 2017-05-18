@@ -3,8 +3,8 @@
 
 #include <string>
 
-#include "QuestiaEng/GuiManager/GuiElement.h"
-#include "QuestiaEng/GuiManager/TabBar.h"
+#include "QuestiaEng/GuiManager/GuiElement/GuiElement.h"
+#include "QuestiaEng/GuiManager/GuiElement/TabBar.h"
 
 class GuiHandler
 {
