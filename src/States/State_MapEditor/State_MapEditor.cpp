@@ -47,7 +47,7 @@ void State_MapEditor::init()
 	mapEditTab.init("eTab", eng->gui(), eng->guiLd());
 	mapEditTab.setBelow(mainTab);
 	eng->guiH().reg(&mapEditTab);
-	
+
 	mapStatus.track("x: ", 0, 45);
 	mapStatus.track("y: ", 0, 45);
 	mapStatus.track("layer: ", "none", 20);
@@ -82,7 +82,7 @@ void State_MapEditor::init()
 		eng->tileEd().createMap(mapName, x, y, z);
 		eng->tileEd().closeMap();
 		eng->tileEd().loadMap(mapName);
-		
+
 		mapStatus.updateVal("width: ", x);
 		mapStatus.updateVal("height: ", y);
 		mapStatus.updateVal("layers: ", z);
@@ -91,6 +91,9 @@ void State_MapEditor::init()
 		qOpenMap.addQuery("choice", mapName, QueryWindow::QueryType::Choice_string);
 		qOpenMap.reInit();
 		qNewMap.resetQueries();
+
+		tileID = -7;
+		mapStatus.updateVal("selected tile: ", "none");
 	});
 	eng->guiH().reg(&qNewMap);
 	eng->guiH().regInput(&qNewMap);
@@ -103,11 +106,13 @@ void State_MapEditor::init()
 	{
 		eng->tileEd().closeMap();
 		eng->tileEd().loadMap(qOpenMap.getChoice_string());
-		
+
 		mapStatus.updateVal("width: ", eng->tileEd().getMapWidth());
 		mapStatus.updateVal("height: ", eng->tileEd().getMapHeight());
 		mapStatus.updateVal("layers: ", eng->tileEd().getMapLayers());
 		mapStatus.updateVal("mapName: ", qOpenMap.getChoice_string());
+		tileID = -7;
+		mapStatus.updateVal("selected tile: ", "none");
 	});
 	eng->guiH().reg(&qOpenMap);
 	eng->guiH().regInput(&qOpenMap);
@@ -164,7 +169,7 @@ void State_MapEditor::update(sf::Time elapsedTime)
 		mapStatus.updateVal("layer: ", "none");
 		eng->tileEd().resetTileAlpha();
 	}
-		
+
 	//differences between mapView and sheetView
 	sf::View& currentView = (mode == Mode::TileMap) ? tileMapView : tileSheetView;
 	float& zoomRatio = (mode == Mode::TileMap) ? mapZoomRatio : sheetZoomRatio;
@@ -216,7 +221,7 @@ void State_MapEditor::update(sf::Time elapsedTime)
 	mousePos.x = std::floor(mousePos.x);
 	mousePos.y = std::floor(mousePos.y);
 	selectedTile = utl::Vector2i((int)mousePos.x, (int)mousePos.y);
-	
+
 	mapStatus.updateVal("x: ", selectedTile.x);
 	mapStatus.updateVal("y: ", selectedTile.y);
 
@@ -236,7 +241,6 @@ void State_MapEditor::update(sf::Time elapsedTime)
 		{
 			if(!isQueryHovered())
 			{
-				tileID = -7;
 				qOpenMap.setActive(true);
 			}
 		}
