@@ -129,6 +129,12 @@ void State_MapEditor::init()
 	});
 	eng->guiH().reg(&qSaveMapAs);
 	eng->guiH().regInput(&qSaveMapAs);
+
+	int y = 0;
+	for(unsigned int it = 0; it < 1000000000; it++)
+	{
+		y += it;
+	}
 }
 
 State_MapEditor::~State_MapEditor()
