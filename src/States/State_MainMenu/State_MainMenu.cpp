@@ -37,6 +37,6 @@ void State_MainMenu::update(sf::Time elapsedTime)
 
 void State_MainMenu::displayTextures()
 {
-	eng->gui().drawButtons();
+	eng->gui().draw();
 }
 

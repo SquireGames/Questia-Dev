@@ -20,10 +20,10 @@ public:
 	//ctor + dtor
 	StateManager(Engine& eng);
 	~StateManager();
-	
+
 	//registers state, only call this once per state
 	void reg(std::string name, std::function<State*()> state);
-	
+
 	//adds state to top of state stack
 	void pushState(std::string stateName);
 	//queues deletion of top state (if any)
@@ -31,13 +31,14 @@ public:
 	//queues deletion of top state (if any), queues new state
 	void changeState(std::string stateName);
 	//queues transition, which pops top (if any) and loads new state on other thread
+	//loadingState cannot use any texture loading operation
 	void transitionState(std::string newState, std::string loadingState);
 
 	//state functions
 	void sUpdate();
 	void sProcessInput(std::u32string& inputText);
 	void sDisplay();
-	
+
 	//state functions
 	void sUpdate(unsigned int offset);
 	void sProcessInput(unsigned int offset, std::u32string& inputText);
@@ -50,7 +51,7 @@ private:
 	void deleteState(unsigned int index);
 	void createState(std::string stateName);
 	void makeTransition(std::string newState, std::string loadingState);
-	
+
 	//handles loading screen
 	void checkLoading();
 
@@ -60,7 +61,7 @@ private:
 	//state containers
 	std::vector<std::unique_ptr<State>> stateStack;
 	std::map<std::string, std::function<State*()>> stateMap;
-	
+
 	//used to queue deletion. new state, and transitions
 	bool isDelQueued = false;
 	bool isStateQueued = false;
@@ -68,14 +69,14 @@ private:
 	int delIndex = 0;
 	std::string newStateName;
 	std::string newTransitionName;
-	
+
 	//used for loading screen
 	bool isStateLoading = false;
 	State* newState = nullptr;
 	std::thread loadingThread;
 	std::promise<State*> thrPromise;
 	std::future<State*> thrFuture;
-	
+
 	//is distributed to new states
 	Engine& eng;
 };

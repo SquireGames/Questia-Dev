@@ -9,134 +9,196 @@
 #include <vector>
 #include <map>
 
+#include "QuestiaEng/Utl/Utl.h"
+
 #include "QuestiaEng/StateManager/State.h"
 #include "QuestiaEng/ResourceManager/ResourceManager.h"
 
 namespace gui
 {
-enum Direction {none = 0, up = 1, right = 2, down = 3, left = 4};
 
-enum class ButtonCharacteristic {coords,
-                                 bounds,
-                                 scroll_x, scroll_y,
-                                 addToScroll_x, addToScroll_y,
-                                 isVisible,
-                                 isActive,
-                                 isTemplate,
-                                 coords_group
-                                };
-enum ButtonAtr {Sprite,
-                Percent,
-                Hover,
-                Text
-               };
-
-enum class ButtonAtrCharacteristic {sprite,
-                                    texture,
-                                    flip,
-                                    coords,
-                                    color,
-                                    charSize,
-                                    text,
-                                    transparency,
-                                    size,
-                                    percentage,
-                                    direction
-                                   };
+enum BtnAtr
+{
+    Sprite,
+    Percent,
+    Hover,
+    Text
+};
+enum class BtnChar
+{
+    coords,
+    bounds,
+    scroll_x, scroll_y,
+    addToScroll_x, addToScroll_y,
+    isVisible,
+    isActive,
+    isTemplate,
+    coords_group
+};
+enum class BtnAtrChar
+{
+    sprite,
+    texture,
+    flip,
+    coords,
+    color,
+    charSize,
+    text,
+    transparency,
+    size,
+    percentage,
+    direction
 };
 
-
-//{ class attributeTypes
-struct RegularSprite
-{
-    sf::Sprite normalSprite;
-    std::pair <int, int> position;
-
-    bool isChanged;
 };
 
-struct ButtonText
+class Button
 {
-    sf::Text text;
-    std::pair <int, int> position;
+public:
+	//ctor + dtor
+	Button(sf::RenderWindow& _window, ResourceManager &_resourceManager, sf::Font& _buttonFont, bool _isTemplate, int _buttonID);
+	Button(const Button& oldButton, int _buttonID);
+	~Button() = default;
 
-    bool isChanged;
-};
+	void addBtnAtr(std::string atrName, gui::BtnAtr buttonAtr);
 
-struct OverlaySprite
-{
-    sf::RectangleShape rectOverlay;
+	void setButton(gui::BtnChar buttonChar, std::string value);
+	void setButton(gui::BtnChar buttonChar, const char* value);
+	void setButton(gui::BtnChar buttonChar, bool value);
+	void setButton(gui::BtnChar buttonChar, int value);
+	void setButton(gui::BtnChar buttonChar, std::pair <int, int> value);
 
-    std::pair <int, int> position;
+	void setBtnAtr(std::string atrName, gui::BtnAtrChar atrChar, std::string value);
+	void setBtnAtr(std::string atrName, gui::BtnAtrChar atrChar, std::pair<int, int> value);
+	void setBtnAtr(std::string atrName, gui::BtnAtrChar atrChar, sf::Color color);
+	void setBtnAtr(std::string atrName, gui::BtnAtrChar atrChar, int value);
+	void setBtnAtr(std::string atrName, gui::BtnAtrChar atrChar, char value);
 
-    bool isChanged;
-    bool isHoveredOver;
-};
+	void update(std::pair <int, int> mouseCoords);
+	void draw();
 
-struct PercentSprite
-{
-    sf::Sprite normalSprite;
-    sf::RectangleShape rectOverlay;
+	//refs
+	sf::RenderWindow& window;
+	ResourceManager& resourceManager;
+	sf::Font& buttonFont;
 
-    float spritePercentage;
-    gui::Direction directionOfGap;
-    sf::IntRect originalTextureRect;
+	//vars
+	std::string buttonName = "none";
+	std::pair <int, int> buttonPosition = std::make_pair(0,0);
+	std::pair <int, int> buttonBounds;
+	int buttonID;
+	int layer = 1;
+	int scroll_x = 0;
+	int scroll_y = 0;
+	bool isTemplate;
+	bool isVisible;
+	bool isCoordsChanged = true;
+	bool isActive = true;
 
-    std::pair <int, int> position;
+	//atrs
+	struct RegularSprite
+	{
+		RegularSprite(std::string name):atrName(name) {}
+		RegularSprite(const RegularSprite& old):atrName(old.atrName), sprite(old.sprite), position(old.position) {}
+		std::string atrName;
+		sf::Sprite sprite;
+		std::pair <int, int> position = std::make_pair(0,0);
+		bool isChanged = true;
+	};
+	struct ButtonText
+	{
+		ButtonText(std::string name, sf::Font& font):atrName(name)
+		{
+			text.setFont(font);
+			text.setFillColor(sf::Color::Black); text.setOutlineColor(sf::Color::Black);
+		}
+		ButtonText(const ButtonText& old):atrName(old.atrName), text(old.text), position(old.position) {}
+		std::string atrName;
+		sf::Text text;
+		std::pair <int, int> position = std::make_pair(0,0);
+		bool isChanged = true;
+	};
+	struct OverlaySprite
+	{
+		OverlaySprite(std::string name, sf::Vector2f bounds):atrName(name)
+		{
+			rectOverlay.setFillColor(sf::Color(0,0,0, 100));
+			rectOverlay.setSize(bounds);
+		}
+		OverlaySprite(const OverlaySprite& old):atrName(old.atrName), rectOverlay(old.rectOverlay), position(old.position) {}
+		std::string atrName;
+		sf::RectangleShape rectOverlay;
+		std::pair <int, int> position = std::make_pair(0,0);
+		bool isChanged = true;
+		bool isHoveredOver = false;
+	};
+	struct PercentSprite
+	{
+		PercentSprite(std::string name):atrName(name) {}
+		PercentSprite(const PercentSprite& old):atrName(old.atrName), sprite(old.sprite), rectOverlay(old.rectOverlay),
+			spritePercentage(old.spritePercentage), directionOfGap(old.directionOfGap),
+			originalTextureRect(old.originalTextureRect), position(old.position) {}
+		std::string atrName;
+		sf::Sprite sprite;
+		sf::RectangleShape rectOverlay;
+		float spritePercentage = 1.f;
+		utl::Direction directionOfGap = utl::Direction::right;
+		sf::IntRect originalTextureRect = sf::IntRect(0,0,0,0);
+		std::pair <int, int> position = std::make_pair(0,0);
+		bool isChanged = true;
+	};
 
-    bool isChanged;
-};
-//}
+	//holds attributes
+	std::vector<RegularSprite> sprites;
+	std::vector<ButtonText> texts;
+	std::vector<OverlaySprite> hovers;
+	std::vector<PercentSprite> percents;
 
-struct Button
-{
-    Button(sf::RenderWindow& _window, ResourceManager &_resourceManager, sf::Font& _buttonFont, bool _isTemplate, int _buttonID);
-    ~Button();
-
-    Button(const Button& oldButton, int _buttonID);
-    void copyToThisButton(Button& newButton, const Button& oldButton);
-
-    sf::RenderWindow& window;
-    ResourceManager& resourceManager;
-    sf::Font& buttonFont;
-
-    //variables
-    std::pair <int, int> buttonPosition;
-    std::pair <int, int> buttonBounds;
-    bool isCoordsChanged;
-    int scrollAmount_x;
-    int scrollAmount_y;
-    bool isVisible;
-    bool isTemplate;
-    bool isActive;
-
-    //used by editor
-    int layer = 1;
-    int buttonID;
-    std::string buttonName = "none";
-
-    //holds attributes
-    std::map<std::string, RegularSprite*> heldSprites;
-    std::map<std::string, ButtonText*> heldText;
-    std::map<std::string, OverlaySprite*> heldOverlaySprites;
-    std::map<std::string, PercentSprite*> heldPercentSprites;
-
-    void setButton(gui::ButtonCharacteristic buttonChar, std::string value);
-    void setButton(gui::ButtonCharacteristic buttonChar, const char* value);
-    void setButton(gui::ButtonCharacteristic buttonChar, bool value);
-    void setButton(gui::ButtonCharacteristic buttonChar, int value);
-    void setButton(gui::ButtonCharacteristic buttonChar, std::pair <int, int> value);
-
-    void addButtonAtr (std::string atrName, gui::ButtonAtr buttonAtr);
-
-    void setButtonAtr(std::string atrName, gui::ButtonAtrCharacteristic atrChar, std::string value);
-    void setButtonAtr(std::string atrName, gui::ButtonAtrCharacteristic atrChar, std::pair<int, int> value);
-    void setButtonAtr(std::string atrName, gui::ButtonAtrCharacteristic atrChar, sf::Color color);
-    void setButtonAtr(std::string atrName, gui::ButtonAtrCharacteristic atrChar, int value);
-    void setButtonAtr(std::string atrName, gui::ButtonAtrCharacteristic atrChar, char value);
-
-    void update(std::pair <int, int> mouseCoords);
-    void drawButton();
+private:
+	inline int count(const std::string& name, const std::vector<RegularSprite>& vec)
+	{
+		for(unsigned int it = 0; it < vec.size(); it++)
+		{
+			if(name == vec.at(it).atrName)
+			{
+				return (int)it;
+			}
+		}
+		return -1;
+	}
+	inline int count(const std::string& name, const std::vector<ButtonText>& vec)
+	{
+		for(unsigned int it = 0; it < vec.size(); it++)
+		{
+			if(name == vec.at(it).atrName)
+			{
+				return (int)it;
+			}
+		}
+		return -1;
+	}
+	inline int count(const std::string& name, const std::vector<OverlaySprite>& vec)
+	{
+		for(unsigned int it = 0; it < vec.size(); it++)
+		{
+			if(name == vec.at(it).atrName)
+			{
+				return (int)it;
+			}
+		}
+		return -1;
+	}
+	inline int count(const std::string& name, const std::vector<PercentSprite>& vec)
+	{
+		for(unsigned int it = 0; it < vec.size(); it++)
+		{
+			if(name == vec.at(it).atrName)
+			{
+				return (int)it;
+			}
+		}
+		return -1;
+	}
 };
 
 

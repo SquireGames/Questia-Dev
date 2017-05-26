@@ -56,7 +56,7 @@ private:
 			isHoverable = canHover;
 			for(Tab& tab : tabs)
 			{
-				guiManager->setButton(tab.buttonName, gui::ButtonCharacteristic::isActive, isHoverable);
+				guiManager->setButton(tab.buttonName, gui::BtnChar::isActive, isHoverable);
 			}
 		}
 	}

@@ -33,8 +33,8 @@ public:
     void createButtonTemplate(std::string buttonName);
     void createButtonTemplate(std::string buttonName, int layer);
     void createButtonTemplate(std::string copyName, std::string originalName);
-    void createButtonAtr(std::string atrName, gui::ButtonAtr buttonAtr);
-    void createButtonAtr(std::string buttonName, std::string atrName, gui::ButtonAtr buttonAtr);
+    void createBtnAtr(std::string atrName, gui::BtnAtr buttonAtr);
+    void createBtnAtr(std::string buttonName, std::string atrName, gui::BtnAtr buttonAtr);
     void setButtonLayer(std::string buttonName, int layer);
     void setButtonLayer(int layer);
 
@@ -56,7 +56,7 @@ public:
     std::string createListEntry();
 
     bool isClicked(std::string buttonName);
-    void drawButtons();
+    void draw();
 	
     void deleteButton(std::string buttonName);
     void deleteGroup(std::string groupName);
@@ -69,32 +69,32 @@ public:
 	sf::Font* getFont() {return &buttonFont;}
 
     template <class T>
-    void setButton(std::string buttonName, gui::ButtonCharacteristic buttonChar, T value)
+    void setButton(std::string buttonName, gui::BtnChar buttonChar, T value)
     {
         buttonMap[buttonName]->setButton(buttonChar, value);
     }
     template <class T>
-    void setButton(gui::ButtonCharacteristic buttonChar, T value)
+    void setButton(gui::BtnChar buttonChar, T value)
     {
         buttonMap[currentButtonEdit]->setButton(buttonChar, value);
     }
     template <class T>
-    void setButtonAtr(std::string buttonName, std::string atrName, gui::ButtonAtrCharacteristic atrChar, T value)
+    void setBtnAtr(std::string buttonName, std::string atrName, gui::BtnAtrChar atrChar, T value)
     {
-        buttonMap[buttonName]->setButtonAtr(atrName, atrChar, value);
+        buttonMap[buttonName]->setBtnAtr(atrName, atrChar, value);
     }
     template <class T>
-    void setButtonAtr(gui::ButtonAtrCharacteristic atrChar, T value)
+    void setBtnAtr(gui::BtnAtrChar atrChar, T value)
     {
-        buttonMap[currentButtonEdit]->setButtonAtr(currentButtonAtrEdit, atrChar, value);
+        buttonMap[currentButtonEdit]->setBtnAtr(currentBtnAtrEdit, atrChar, value);
     }
 
     template <class T>
-    void setGroupAtr(std::string groupName, gui::ButtonCharacteristic buttonChar, T value)
+    void setGroupAtr(std::string groupName, gui::BtnChar buttonChar, T value)
     {
-        if(buttonChar == gui::ButtonCharacteristic::coords)
+        if(buttonChar == gui::BtnChar::coords)
         {
-            buttonChar = gui::ButtonCharacteristic::coords_group;
+            buttonChar = gui::BtnChar::coords_group;
         }
         if(groupMap.count(groupName))
         {
@@ -106,11 +106,11 @@ public:
         }
     }
     template <class T>
-    void setGroupAtr(gui::ButtonCharacteristic buttonChar, T value)
+    void setGroupAtr(gui::BtnChar buttonChar, T value)
     {
-        if(buttonChar == gui::ButtonCharacteristic::coords)
+        if(buttonChar == gui::BtnChar::coords)
         {
-            buttonChar = gui::ButtonCharacteristic::coords_group;
+            buttonChar = gui::BtnChar::coords_group;
         }
         if(groupMap.count(currentGroupEdit))
         {
@@ -122,7 +122,7 @@ public:
         }
     }
     template <class T>
-    void setListAtr(std::string listName, gui::ButtonCharacteristic buttonChar, T value)
+    void setListAtr(std::string listName, gui::BtnChar buttonChar, T value)
     {
         for(const std::string& groupIt : listMap[listName].elementGroups)
         {
@@ -130,7 +130,7 @@ public:
         }
     }
     template <class T>
-    void setListAtr(gui::ButtonCharacteristic buttonChar, T value)
+    void setListAtr(gui::BtnChar buttonChar, T value)
     {
         for(const std::string& groupIt : listMap[currentListEdit].elementGroups)
         {
@@ -143,7 +143,7 @@ private:
     ResourceManager &resourceManager;
 
     std::string currentButtonEdit;
-    std::string currentButtonAtrEdit;
+    std::string currentBtnAtrEdit;
     std::string currentGroupEdit;
     std::string currentListEdit;
 

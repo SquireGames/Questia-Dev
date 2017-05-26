@@ -22,9 +22,9 @@ private:
 
     SaveFile guiFile;
 
-    gui::ButtonAtr getButtonAtr(std::string buttonAtr);
-    gui::ButtonAtrCharacteristic getButtonAtrCharacteristic(std::string buttonAtrCharacteristic);
-    gui::ButtonCharacteristic getButtonCharacteristic(std::string buttonCharacteristic);
+    gui::BtnAtr getBtnAtr(std::string buttonAtr);
+    gui::BtnAtrChar getBtnAtrChar(std::string buttonAtrCharacteristic);
+    gui::BtnChar getBtnChar(std::string buttonCharacteristic);
 };
 
 #endif // GUILOADER_H
