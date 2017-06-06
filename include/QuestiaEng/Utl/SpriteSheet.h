@@ -11,10 +11,10 @@
 class SpriteSheet
 {
 public:
-    SpriteSheet(ResourceManager& _resourceManager, std::string imageLocation, unsigned int slides_x, unsigned int slides_y);
-    SpriteSheet(ResourceManager& _resourceManager);
+    SpriteSheet(ResourceManager& resourceManager, std::string imageLocation, unsigned int slides_x, unsigned int slides_y);
+    SpriteSheet(ResourceManager& resourceManager);
 
-    void loadSprite(std::string imageLocation, unsigned int slides_x, unsigned int slides_y);
+    void loadSprite(const std::string& imageLocation, unsigned int slides_x, unsigned int slides_y);
 
     sf::Sprite& getSprite(unsigned int map_x, unsigned int map_y);
 

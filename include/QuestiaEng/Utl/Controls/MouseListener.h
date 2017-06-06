@@ -2,6 +2,7 @@
 #define MOUSELISTENER_H
 
 #include <iostream>
+
 #include "SFML/Window/Mouse.hpp"
 #include "QuestiaEng/Utl/Controls/Input.h"
 
@@ -21,7 +22,6 @@ public:
     bool isMouseReleased(ctr::Input button);
 	int getScroll(){return scroll;}
 	utl::Vector2f getMousePos(){return mousePos;}
-	
 	
 private:
     bool isMouseHeld_l = false;

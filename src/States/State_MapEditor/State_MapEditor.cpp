@@ -414,7 +414,7 @@ void State_MapEditor::displayTextures()
 		break;
 	}
 
-//draw the gui
+	//draw the gui
 	eng->win().setView(overlayView);
 	eng->gui().draw();
 }

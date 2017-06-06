@@ -12,7 +12,7 @@
 #include "QuestiaEng/TileEngine/TileEngine_Editor.h"
 #include "QuestiaEng/StateManager/StateManager.h"
 
-#include "QuestiaEng/SaveFile_Options.h"
+#include "QuestiaEng/SV_Options.h"
 
 #include "QuestiaEng/Utl/Type/Vector2.h"
 #include "QuestiaEng/Utl/Controls/MouseListener.h"
@@ -48,7 +48,7 @@ public:
 
 private:
 	//options
-	SaveFile_Options saveFile;
+	SV_Options saveFile;
 
 	//main window
 	sf::RenderWindow window;

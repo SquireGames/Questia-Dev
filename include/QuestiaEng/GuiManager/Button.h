@@ -56,23 +56,26 @@ class Button
 {
 public:
 	//ctor + dtor
-	Button(sf::RenderWindow& _window, ResourceManager &_resourceManager, sf::Font& _buttonFont, bool _isTemplate, int _buttonID);
-	Button(const Button& oldButton, int _buttonID);
+	Button(sf::RenderWindow& window, ResourceManager& resourceManager, sf::Font& buttonFont, bool isTemplate, int buttonID, int buttonGroupID = -1);
+	Button(const Button& oldButton, int buttonID, int buttonGroupID = -1);
 	~Button() = default;
+	
+	//identical copy of other button
+	Button& operator= (const Button& other);
 
-	void addBtnAtr(std::string atrName, gui::BtnAtr buttonAtr);
+	void addBtnAtr(const std::string& atrName, gui::BtnAtr buttonAtr);
 
-	void setButton(gui::BtnChar buttonChar, std::string value);
+	void setButton(gui::BtnChar buttonChar, const std::string& value);
 	void setButton(gui::BtnChar buttonChar, const char* value);
 	void setButton(gui::BtnChar buttonChar, bool value);
 	void setButton(gui::BtnChar buttonChar, int value);
 	void setButton(gui::BtnChar buttonChar, std::pair <int, int> value);
 
-	void setBtnAtr(std::string atrName, gui::BtnAtrChar atrChar, std::string value);
-	void setBtnAtr(std::string atrName, gui::BtnAtrChar atrChar, std::pair<int, int> value);
-	void setBtnAtr(std::string atrName, gui::BtnAtrChar atrChar, sf::Color color);
-	void setBtnAtr(std::string atrName, gui::BtnAtrChar atrChar, int value);
-	void setBtnAtr(std::string atrName, gui::BtnAtrChar atrChar, char value);
+	void setBtnAtr(const std::string& atrName, gui::BtnAtrChar atrChar, const std::string& value);
+	void setBtnAtr(const std::string& atrName, gui::BtnAtrChar atrChar, std::pair<int, int> value);
+	void setBtnAtr(const std::string& atrName, gui::BtnAtrChar atrChar, sf::Color color);
+	void setBtnAtr(const std::string& atrName, gui::BtnAtrChar atrChar, int value);
+	void setBtnAtr(const std::string& atrName, gui::BtnAtrChar atrChar, char value);
 
 	void update(std::pair <int, int> mouseCoords);
 	void draw();
@@ -83,10 +86,10 @@ public:
 	sf::Font& buttonFont;
 
 	//vars
-	std::string buttonName = "none";
 	std::pair <int, int> buttonPosition = std::make_pair(0,0);
 	std::pair <int, int> buttonBounds;
 	int buttonID;
+	int buttonGroupID;
 	int layer = 1;
 	int scroll_x = 0;
 	int scroll_y = 0;
@@ -94,6 +97,7 @@ public:
 	bool isVisible;
 	bool isCoordsChanged = true;
 	bool isActive = true;
+	bool isHovered = false;
 
 	//atrs
 	struct RegularSprite
@@ -155,7 +159,8 @@ public:
 	std::vector<PercentSprite> percents;
 
 private:
-	inline int count(const std::string& name, const std::vector<RegularSprite>& vec)
+	template<class T>
+	inline int count(const std::string& name, const std::vector<T>& vec)
 	{
 		for(unsigned int it = 0; it < vec.size(); it++)
 		{
@@ -166,39 +171,7 @@ private:
 		}
 		return -1;
 	}
-	inline int count(const std::string& name, const std::vector<ButtonText>& vec)
-	{
-		for(unsigned int it = 0; it < vec.size(); it++)
-		{
-			if(name == vec.at(it).atrName)
-			{
-				return (int)it;
-			}
-		}
-		return -1;
-	}
-	inline int count(const std::string& name, const std::vector<OverlaySprite>& vec)
-	{
-		for(unsigned int it = 0; it < vec.size(); it++)
-		{
-			if(name == vec.at(it).atrName)
-			{
-				return (int)it;
-			}
-		}
-		return -1;
-	}
-	inline int count(const std::string& name, const std::vector<PercentSprite>& vec)
-	{
-		for(unsigned int it = 0; it < vec.size(); it++)
-		{
-			if(name == vec.at(it).atrName)
-			{
-				return (int)it;
-			}
-		}
-		return -1;
-	}
+
 };
 
 

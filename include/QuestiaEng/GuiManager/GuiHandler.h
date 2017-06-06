@@ -9,7 +9,7 @@
 class GuiHandler
 {
 public:
-	GuiHandler(MouseListener& mou);
+	GuiHandler(MouseListener& mouse);
 	~GuiHandler();
 
 	void reg(GuiElement* guiElement);

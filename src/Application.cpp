@@ -12,7 +12,7 @@ Application::Application():
 	eng.state().reg("MapEditor",    []() {return new State_MapEditor();});
 	eng.state().reg("Loading",  	[]() {return new State_Loading();});
 	
-	eng.state().changeState("MainMenu");
+	eng.state().changeState("MainMenu");;
 	
 	eng.guiLd().setGuiPack("Default");
 }

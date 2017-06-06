@@ -8,8 +8,8 @@ class Ticker
 {
 public:
     //ctor, dtor
-    Ticker(unsigned int _tickInterval = 128);
-    ~Ticker();
+    Ticker(unsigned int tickInterval = 128);
+    ~Ticker() = default;
 
     //add to currentTick
     void tick();

@@ -14,14 +14,14 @@ public:
 	StatusBar(utl::Direction direction = utl::Direction::down, int offset = 0);
 	~StatusBar();
 
-	void track(std::string text, int val, int space);
-	void track(std::string text, std::string val, int space);
+	void track(const std::string& text, int val, int space);
+	void track(const std::string&, const std::string&, int space);
 	void addSpace(int space);
 
-	void init(std::string barName, GuiManager& pGuiManager, GuiLoader& guiLoader);
+	void init(const std::string& barName, GuiManager& pGuiManager, GuiLoader& guiLoader);
 
-	void updateVal(std::string key, int val);
-	void updateVal(std::string key, std::string val);
+	void updateVal(const std::string&, int val);
+	void updateVal(const std::string&, const std::string&);
 
 	//GuiElement
 	void update(MouseListener& mouse);

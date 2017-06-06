@@ -22,17 +22,17 @@ public:
 	~StateManager();
 
 	//registers state, only call this once per state
-	void reg(std::string name, std::function<State*()> state);
+	void reg(const std::string& name, std::function<State*()> state);
 
 	//adds state to top of state stack
-	void pushState(std::string stateName);
+	void pushState(const std::string& stateName);
 	//queues deletion of top state (if any)
 	void popState();
 	//queues deletion of top state (if any), queues new state
-	void changeState(std::string stateName);
+	void changeState(const std::string& stateName);
 	//queues transition, which pops top (if any) and loads new state on other thread
 	//loadingState cannot use any texture loading operation
-	void transitionState(std::string newState, std::string loadingState);
+	void transitionState(const std::string& newState, const std::string& loadingState);
 
 	//state functions
 	void sUpdate();
@@ -49,8 +49,8 @@ private:
 	void checkQueues();
 	//does actual state deletion, creation, transition
 	void deleteState(unsigned int index);
-	void createState(std::string stateName);
-	void makeTransition(std::string newState, std::string loadingState);
+	void createState(const std::string& stateName);
+	void makeTransition(const std::string& newState, const std::string& loadingState);
 
 	//handles loading screen
 	void checkLoading();

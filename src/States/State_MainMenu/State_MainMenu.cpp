@@ -13,6 +13,7 @@ void State_MainMenu::init()
 State_MainMenu::~State_MainMenu()
 {
 	eng->gui().purgeButtons();
+	std::cout << "Closing Main Menu" << std::endl;
 }
 
 void State_MainMenu::processInput(std::u32string const& inputText)
@@ -30,7 +31,7 @@ void State_MainMenu::update(sf::Time elapsedTime)
 		}
 		else if(eng->gui().isClicked("editMap"))
         {
-			eng->state().transitionState("MapEditor", "Loading");
+			eng->state().changeState("MapEditor");
         }
 	}
 }

@@ -11,16 +11,16 @@
 
 #include "QuestiaEng/Utl/Utl.h"
 
-#include "QuestiaEng/TileEngine/SaveFile_TileEngine.h"
+#include "QuestiaEng/TileEngine/SV_TileEngine.h"
 
 class TileEngine_Editor
 {
 public:
 	//ctor + dtor
-	TileEngine_Editor(sf::RenderWindow& _window, ResourceManager& _resourceManager, TileEngine& tileEng);
+	TileEngine_Editor(sf::RenderWindow& window, ResourceManager& resourceManager, TileEngine& tileEng);
 	~TileEngine_Editor() = default;
 
-	void createMap(std::string mapName, unsigned int width, unsigned int height, unsigned int layers);
+	void createMap(const std::string& mapName, unsigned int width, unsigned int height, unsigned int layers);
 	void closeMap();
 	
 	void setViewportSize(float width, float height) {tileEngine.setViewportSize(width, height);}
@@ -29,7 +29,7 @@ public:
 	void draw(){drawMap();}
 
 	///gets called instead of base class
-	void loadMap(std::string _mapName);
+	void loadMap(const std::string& mapName);
 	//draws map with sprites
 	void drawMap();
 	//draws out all tiles
@@ -67,7 +67,7 @@ public:
 	void replaceTile(int newTile, int x, int y, int layer);
 
 	//for 'save as' functionality
-	void changeMapName(std::string newName);
+	void changeMapName(const std::string& newName);
 
 private:
 	sf::RenderWindow& window;
@@ -81,7 +81,7 @@ private:
 	sf::VertexArray gridLines;
 
 	//save
-	SaveFile_TileEngine saveFile;
+	SV_TileEngine saveFile;
 	
 	bool isGridDrawn = true;
 

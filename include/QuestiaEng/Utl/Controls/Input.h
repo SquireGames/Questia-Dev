@@ -1,9 +1,9 @@
 #ifndef KEYBOARD_H
 #define KEYBOARD_H
 
-#include <SFML/Window.hpp>
-
 #include <map>
+
+#include "SFML/Window.hpp"
 
 namespace ctr
 {

@@ -19,8 +19,8 @@ public:
 
 	enum class QueryType {Input_int, Input_string, Choice_string};
 
-	void addQuery(std::string queryID, std::string queryQuestion, QueryType queryType);
-	void init(std::string windowName, GuiManager& pGuiManager, GuiLoader* guiLoader, std::function<void()> handle);
+	void addQuery(const std::string& queryID, const std::string& queryQuestion, QueryType queryType);
+	void init(const std::string& windowName, GuiManager& pGuiManager, GuiLoader* guiLoader, std::function<void()> handle);
 	void reInit();
 
 	void setActive(bool isActive);
@@ -28,8 +28,8 @@ public:
 
 	void resetQueries();
 
-	int getResult_int(std::string queryID);
-	std::string getResult_string(std::string queryID);
+	int getResult_int(const std::string& queryID);
+	std::string getResult_string(const std::string& queryID);
 	std::string getChoice_string();
 
 	//GuiElement
@@ -37,7 +37,7 @@ public:
 	void update(MouseListener& mouse);
 
 	bool isDone();
-	bool isWindow(std::string question);
+	bool isWindow(const std::string& question);
 
 private:
 	GuiManager* guiManager;
@@ -51,7 +51,7 @@ private:
 
 	struct Query
 	{
-		Query(std::string _queryQuestion, QueryType _queryType):queryQuestion(_queryQuestion), queryType(_queryType) {}
+		Query(std::string queryQuestion, QueryType queryType):queryQuestion(queryQuestion), queryType(queryType) {}
 
 		std::string buttonName;
 

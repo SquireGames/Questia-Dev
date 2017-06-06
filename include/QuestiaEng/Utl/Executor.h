@@ -22,10 +22,10 @@ public:
 
     enum class TaskType {Continuous, Delayed};
 
-    void addTask(std::string taskName, TaskType taskType, utl::Ticker ticker, std::function<void(float taskPercentage)> task);
+    void addTask(const std::string& taskName, TaskType taskType, utl::Ticker ticker, std::function<void(float taskPercentage)> task);
     void processTasks();
 
-    void tryDelete(std::string taskName);
+    void tryDelete(const std::string& taskName);
 
 private:
     struct Event

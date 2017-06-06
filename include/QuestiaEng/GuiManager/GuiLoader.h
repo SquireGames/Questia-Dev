@@ -13,8 +13,8 @@ public:
     GuiLoader();
     ~GuiLoader();
 
-    void loadGui(GuiManager& guiManager, std::string gui);
-    void setGuiPack(std::string guiPack);
+    void loadGui(GuiManager& guiManager, const std::string& gui);
+    void setGuiPack(const std::string& guiPack);
 
 private:
     std::string primaryPack = "Default";

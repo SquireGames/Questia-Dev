@@ -12,13 +12,13 @@ public:
 	MenuStack(utl::Direction direction);
 	~MenuStack();
 
-	int addEntry(std::string text, std::string buttonName);
-	void init(std::string stackName, int x, int y, GuiManager& pGuiManager, GuiLoader& guiLoader);
+	int addEntry(const std::string& text, const std::string& buttonName);
+	void init(const std::string& stackName, int x, int y, GuiManager& pGuiManager, GuiLoader& guiLoader);
 	
 	unsigned int size() {return entries.size();}
 	
 	void handleInput(std::u32string& input);
-	//automatically called if MenuStack is registered into GuiHandler
+	
 	void update(MouseListener& mouse);
 	
 	void setActivity(bool active);
@@ -32,7 +32,7 @@ private:
 
 	struct Entry
 	{
-		Entry(std::string pEntryText):entryText(pEntryText) {}
+		Entry(const std::string& entryText):entryText(entryText) {}
 		std::string entryText;
 		std::string buttonName;
 		//TODO make possible boolean toggle

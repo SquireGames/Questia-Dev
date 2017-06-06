@@ -16,7 +16,7 @@ class Tile
 {
 public:
     //ctor + dtor
-    Tile(sf::RenderWindow& _window, ResourceManager& _resourceManager);
+    Tile(sf::RenderWindow& window, ResourceManager& resourceManager);
     ~Tile() = default;
 
     //tile single tile or texture (for sprite batching)
@@ -27,7 +27,7 @@ public:
     void drawTile();
 
     //only sprite
-    void setTexture(std::string filePath);
+    void setTexture(const std::string& filePath);
     void setPosition(int x, int y);
     void setTransparency(int alpha);
 

@@ -11,8 +11,8 @@
 namespace utl
 {
     bool doesExist(const std::string& fileLocation);
-    std::vector<std::string> getFiles(std::string directory, bool isWithDirectory);
-    std::vector<std::string> getAllFiles(std::string directory, bool isWithDirectory);
+    std::vector<std::string> getFiles(const std::string& directory, bool isWithDirectory);
+    std::vector<std::string> getAllFiles(const std::string& directory, bool isWithDirectory);
     bool createDirectory(const std::string& filePath);
 
     std::vector<std::string> filterFiles(const std::vector<std::string>& inputFiles, const std::string& extension);

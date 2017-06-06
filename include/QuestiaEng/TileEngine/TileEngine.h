@@ -19,8 +19,7 @@
 #include "QuestiaEng/Utl/Utl.h"
 #include "QuestiaEng/Utl/SpriteSheet.h"
 
-#include "QuestiaEng/TileEngine/SaveFile_TileEngine.h"
-#include "QuestiaEng/TileEngine/SaveFile_TileEngine.h"
+#include "QuestiaEng/TileEngine/SV_TileEngine.h"
 
 #include "QuestiaEng/TileEngine/Tile.h"
 
@@ -28,12 +27,12 @@ class TileEngine
 {
 public:
 	//ctor and dtor
-	TileEngine(sf::RenderWindow& _window, ResourceManager& _resourceManager);
+	TileEngine(sf::RenderWindow& window, ResourceManager& resourceManager);
 	~TileEngine();
 	
 	friend class TileEngine_Editor;
 
-	void loadMap(std::string _mapName, TileMap::TextureMode textureMode = TileMap::TextureMode::Map, TileMap::TileMode tileMode = TileMap::TileMode::Batch);
+	void loadMap(const std::string& mapName, TileMap::TextureMode textureMode = TileMap::TextureMode::Map, TileMap::TileMode tileMode = TileMap::TileMode::Batch);
 	void closeMap();
 
 	void draw();

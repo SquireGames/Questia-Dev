@@ -17,18 +17,15 @@ enum Direction {none = 0, up = 1, upRight = 2, right = 3, downRight = 4, down = 
 
 ///types
 //comparison
-bool isNumber(const std::string& _string);
-bool isWithAnyCharacter(const std::string& _string, const std::string& characters);
+bool isNumber(const std::string& string);
+bool isWithAnyCharacter(const std::string& string, const std::string& characters);
 //conversion
-template <class T> extern
-std::string asString (const T& _item);
-int         asInt(const std::string& _string);
-float       asFloat(const std::string& _string);
+int   asInt(const std::string& string);
+float asFloat(const std::string& string);
 //combination
-std::vector <std::string> separateString (const std::string& saveString, const char& delimiter);
-std::vector <std::string> separateString (const std::string& saveString, const std::string& delimiters);
-std::string conjoinString (const std::vector <std::string>& stringParts, const char& delimiter);
-std::string conjoinString (const std::vector <std::string>& stringParts);
+std::vector <std::string> separateString(const std::string& saveString, const char& delimiter);
+std::string conjoinString(const std::vector <std::string>& stringParts, const char& delimiter);
+std::string conjoinString(const std::vector <std::string>& stringParts);
 }
 
 #endif // UTL_H

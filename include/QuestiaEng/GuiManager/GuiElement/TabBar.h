@@ -15,12 +15,12 @@ public:
 	TabBar(utl::Direction direction, int offset = 0);
 	~TabBar();
 
-	int addTab(std::string text, std::string buttonName = std::string());
+	int addTab(const std::string& text, const std::string& buttonName = std::string());
 	void addSpace(int tabID, int spacing);
 	void addSpace(int spacing);
-	void addEntry(int tabID, std::string entryText, std::string buttonName);
-	void addEntry(std::string entryText, std::string buttonName);
-	void init(std::string tabBarName, GuiManager& pGuiManager, GuiLoader& guiLoader);
+	void addEntry(int tabID, const std::string& entryText, const std::string& buttonName);
+	void addEntry(const std::string& entryText, const std::string& buttonName);
+	void init(const std::string& tabBarName, GuiManager& pGuiManager, GuiLoader& guiLoader);
 
 	//if one tab bar is right below another, to prevent double selection
 	void setBelow(TabBar& other);
@@ -42,7 +42,7 @@ private:
 
 	struct Tab
 	{
-		Tab(std::string pTabName, std::string bName, utl::Direction dir):tabName(pTabName), buttonName(bName), menu((dir == utl::Direction::down) ? utl::Direction::up : utl::Direction::down) {}
+		Tab(std::string tabName, std::string buttonName, utl::Direction dir):tabName(tabName), buttonName(buttonName), menu((dir == utl::Direction::down) ? utl::Direction::up : utl::Direction::down) {}
 		std::string tabName;
 		std::string buttonName;
 		MenuStack menu;

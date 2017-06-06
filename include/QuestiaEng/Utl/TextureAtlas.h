@@ -10,23 +10,23 @@
 struct TextureAtlasData
 {
     //ctor
-    TextureAtlasData(sf::Texture* _texture) : texture(_texture) {}
+    TextureAtlasData(sf::Texture* texture) : texture(texture) {}
 
     std::map<std::string, utl::IntRect> textureCoords;
-    sf::Texture* texture = nullptr;
+    sf::Texture* texture;
 };
 
 class TextureAtlas
 {
 public:
-    TextureAtlas(ResourceManager& _resourceManager);
+    TextureAtlas(ResourceManager& resourceManager);
     ~TextureAtlas();
 
     //returns if there is space, otherwise make another one
-    bool addTexture(std::string name, std::string fileLocation);
+    bool addTexture(const std::string& name, const std::string& fileLocation);
 
     //returns the textures and coords of texture bounds
-    TextureAtlasData compileTextures(std::string textureName);
+    TextureAtlasData compileTextures(const std::string& textureName);
 
     //clear everything
     void reset()

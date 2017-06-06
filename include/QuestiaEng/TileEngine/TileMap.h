@@ -16,7 +16,7 @@ public:
 
 	void initialize() {isInitialized = true;}
 
-	void setName(std::string name)						{ if(!isInitialized) {tileMapName = name;}}
+	void setName(const std::string& name)				{ if(!isInitialized) {tileMapName = name;}}
 	void setTileMap(std::vector <int> p_tileMap)		{ if(!isInitialized) {tileMap = p_tileMap;}}
 	void setTileKey(std::map <int, Tile> p_tileKey)		{ if(!isInitialized) {tileKey = p_tileKey;}}
 	void setWidth(unsigned int p_width) 				{ if(!isInitialized) {width = p_width;}}
