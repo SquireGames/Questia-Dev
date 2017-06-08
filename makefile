@@ -5,7 +5,9 @@ CC         := g++
 CFLAGS     := -std=c++11 -MP -MD -Wall
 DEBUGFLAGS := -g -DDEBUGMODE=1
 LIB_win    := -L lib/SFML-2.4.2-win/lib -lsfml-audio -lsfml-network -lsfml-graphics -lsfml-window -lsfml-system -L lib/QuestiaEng-1.0.0-win -lquestia-eng.1.0.0
-LIB_lin    := -L lib/SFML-2.4.2-lin/lib -lsfml-audio -lsfml-network -lsfml-graphics -lsfml-window -lsfml-system -L lib/QuestiaEng-1.0.0-lin -lquestia-eng.1.0.0
+LIB_win_db := -L lib/SFML-2.4.2-win/lib -lsfml-audio -lsfml-network -lsfml-graphics -lsfml-window -lsfml-system -L lib/QuestiaEng-1.0.0-win -lquestia-eng-d.1.0.0
+LIB_lin    := -L lib/SFML-2.4.2-lin/lib -lsfml-audio -lsfml-network -lsfml-graphics -lsfml-window -lsfml-system -lquestia-eng.1.0.0
+LIB_lin_db := -L lib/SFML-2.4.2-lin/lib -lsfml-audio -lsfml-network -lsfml-graphics -lsfml-window -lsfml-system -lquestia-eng-d.1.0.0
 SRCEXT     := cpp
 
 SRCDIR     := src
@@ -38,12 +40,22 @@ ifeq ($(OS),Windows_NT)
 	$(wildcard src/**/**/**/**/**/*.$(SRCEXT)) $(wildcard src/**/**/**/**/**/**/*.$(SRCEXT))
 	
 	EXE := .exe
-	LIB := $(LIB_win)
+	
+	ifneq "$(findstring ebug, $(MAKECMDGOALS))" ""
+		LIB := $(LIB_win_db)
+	else
+		LIB := $(LIB_win)
+	endif
 else
 	SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
 
 	EXE = 
-	LIB := $(LIB_lin)
+	
+	ifneq "$(findstring ebug, $(MAKECMDGOALS))" ""
+		LIB := $(LIB_lin_db)
+	else
+		LIB := $(LIB_lin)
+	endif
 endif
 
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))

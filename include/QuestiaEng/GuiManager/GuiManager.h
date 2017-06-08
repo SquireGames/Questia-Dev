@@ -10,6 +10,8 @@
 #include "SFML/Graphics.hpp"
 #include "SFML/Graphics/Text.hpp"
 
+#include "QuestiaEng/Utl/Logger.h"
+
 #include "QuestiaEng/ResourceManager/ResourceManager.h"
 #include "QuestiaEng/GuiManager/Button.h"
 #include "QuestiaEng/Utl/Type/Vector2.h"
@@ -185,7 +187,7 @@ void GuiManager::setButton(int buttonID, gui::BtnChar buttonChar, T value)
 #ifdef DEBUGMODE
 	if(getPos(buttonID) == -1)
 	{
-		//TODO print warning
+		LOG("Button with ID: " + std::to_string(buttonID) + " does not exist");
 		return;
 	}
 #endif
@@ -197,7 +199,7 @@ void GuiManager::setButton(const std::string& buttonName, gui::BtnChar buttonCha
 #ifdef DEBUGMODE
 	if(getPos(buttonName) == -1)
 	{
-		//TODO print warning
+		LOG("Button with name: '" + buttonName + "' does not exist");
 		return;
 	}
 #endif
@@ -215,7 +217,7 @@ void GuiManager::setBtnAtr(int buttonID, const std::string& atrName, gui::BtnAtr
 #ifdef DEBUGMODE
 	if(getPos(buttonID) == -1)
 	{
-		//TODO print warning
+		LOG("Button with ID: " + std::to_string(buttonID) + " does not exist");
 		return;
 	}
 #endif
@@ -227,7 +229,7 @@ void GuiManager::setBtnAtr(const std::string& buttonName, const std::string& atr
 #ifdef DEBUGMODE
 	if(getPos(buttonName) == -1)
 	{
-		//TODO print warning
+		LOG("Button with name: '" + buttonName + "' does not exist");
 		return;
 	}
 #endif
@@ -245,7 +247,7 @@ void GuiManager::setGroupAtr(const std::string& groupName, gui::BtnChar buttonCh
 #ifdef DEBUGMODE
 	if(!groupExists(groupName))
 	{
-		//TODO print warning
+		LOG("Group with name: '" + groupName + "' does not exist");
 		return;
 	}
 #endif
@@ -271,7 +273,7 @@ void GuiManager::setListAtr(const std::string& listName, gui::BtnChar buttonChar
 #ifdef DEBUGMODE
 	if(!listExists(listName))
 	{
-		//TODO print warning
+		LOG("List with name: '" + listName + "' does not exist");
 		return;
 	}
 #endif
@@ -356,7 +358,7 @@ inline std::vector<int>& GuiManager::getGroupIDs(const std::string& entry)
 #ifdef DEBUGMODE
 	if(!groupExists(entry))
 	{
-		//TODO print warning
+		LOG("Group with name: '" + entry + "' does not exist");
 		return groups.back().second;
 	}
 #endif
@@ -375,7 +377,7 @@ inline GuiManager::ListData& GuiManager::getList(const std::string& listName)
 #ifdef DEBUGMODE
 	if(!listExists(listName))
 	{
-		//TODO print warning
+		LOG("List with name: '" + listName + "' does not exist");
 		return lists.back();
 	}
 #endif

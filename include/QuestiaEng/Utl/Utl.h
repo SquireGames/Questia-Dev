@@ -24,8 +24,8 @@ int   asInt(const std::string& string);
 float asFloat(const std::string& string);
 //combination
 std::vector <std::string> separateString(const std::string& saveString, const char& delimiter);
-std::string conjoinString(const std::vector <std::string>& stringParts, const char& delimiter);
-std::string conjoinString(const std::vector <std::string>& stringParts);
+std::string conjoinString(const std::vector<std::string>& stringParts, const char& delimiter);
+std::string conjoinString(const std::vector<std::string>& stringParts);
 }
 
 #endif // UTL_H

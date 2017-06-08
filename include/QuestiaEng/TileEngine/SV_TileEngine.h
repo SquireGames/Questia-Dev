@@ -1,5 +1,5 @@
-#ifndef SAVEFILE_TILEENGINE_H
-#define SAVEFILE_TILEENGINE_H
+#ifndef SV_TILEENGINE_H
+#define SV_TILEENGINE_H
 
 #include <vector>
 
@@ -78,4 +78,4 @@ private:
 	const std::string file_map =       "/map.txt";
 };
 
-#endif // SAVEFILE_TILEENGINE_H
+#endif // SV_TILEENGINE_H

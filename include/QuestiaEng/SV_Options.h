@@ -1,5 +1,5 @@
-#ifndef SAVEFILE_OPTIONS_H
-#define SAVEFILE_OPTIONS_H
+#ifndef SV_OPTIONS_H
+#define SV_OPTIONS_H
 
 #include <string>
 
@@ -100,4 +100,4 @@ private:
     const std::string key_skill_6_name = "Skill 6";
 };
 
-#endif // SAVEFILE_OPTIONS_H
+#endif // SV_OPTIONS_H
