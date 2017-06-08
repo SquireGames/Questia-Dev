@@ -1,6 +1,6 @@
 # Questia Development Tools
 
-This is a set of development tools to build the game Questia. It relies on the Questia Engine libraries, found[here](https://github.com/SquireGames/Questia-Engine).
+This is a set of development tools to build the game Questia. It relies on the Questia Engine libraries, found [here](https://github.com/SquireGames/Questia-Engine).
 
 Building:
 ----------------
