@@ -1,15 +1,16 @@
 #ifndef BUTTON_H
 #define BUTTON_H
 
-#include <SFML/Graphics.hpp>
-#include <SFML/Graphics/Text.hpp>
-
 #include <sstream>
 #include <iostream>
 #include <vector>
 #include <map>
 
+#include "SFML/Graphics.hpp"
+#include "SFML/Graphics/Text.hpp"
+
 #include "QuestiaEng/Utl/Utl.h"
+#include "QuestiaEng/Utl/Logger.h"
 
 #include "QuestiaEng/StateManager/State.h"
 #include "QuestiaEng/ResourceManager/ResourceManager.h"
@@ -72,6 +73,7 @@ public:
 	void setButton(gui::BtnChar buttonChar, std::pair <int, int> value);
 
 	void setBtnAtr(const std::string& atrName, gui::BtnAtrChar atrChar, const std::string& value);
+	void setBtnAtr(const std::string& atrName, gui::BtnAtrChar atrChar, const std::u32string& value);
 	void setBtnAtr(const std::string& atrName, gui::BtnAtrChar atrChar, std::pair<int, int> value);
 	void setBtnAtr(const std::string& atrName, gui::BtnAtrChar atrChar, sf::Color color);
 	void setBtnAtr(const std::string& atrName, gui::BtnAtrChar atrChar, int value);

@@ -12,8 +12,8 @@ SRCEXT     := cpp
 
 SRCDIR     := src
 INC        := -I include
-TARGET_R   := bin/Questia
-TARGET_D   := bin/Questia_debug
+TARGET_R   := bin/QuestiaDev
+TARGET_D   := bin/QuestiaDev_debug
 BUILDDIR_R := build
 BUILDDIR_D := build_debug
 

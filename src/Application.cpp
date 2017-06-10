@@ -1,7 +1,7 @@
 #include "QuestiaDev/Application.h"
 
 Application::Application():
-	eng("", 128)
+	eng("", 128, 0, 0, 0, "Alpha")
 {
 	//enforce windowed mode
 	eng.win().create(sf::VideoMode(1920, 1080), "Questia Editor", sf::Style::Default, sf::ContextSettings(0,0,16));

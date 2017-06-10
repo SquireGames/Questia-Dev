@@ -21,7 +21,7 @@ class Engine
 {
 public:
 	//ctor + dtor
-	Engine(std::string windowName, int tickRate);
+	Engine(std::string windowName, int tickRate, int majorVersion, int minorVersion, int revision, std::string versionSuffix);
 	~Engine() = default;
 
 	//runtime loop function
@@ -45,6 +45,10 @@ public:
 	TileEngine&	 		tile()	{return tileEngine;}
 	TileEngine_Editor&	tileEd(){return tileEngineEditor;}
 	StateManager& 		state() {return stateManager;}
+	
+	//versions
+	std::string getVersion();
+	std::string getVersion_eng();
 
 private:
 	//options
@@ -82,6 +86,13 @@ private:
 
 	//flags
 	bool toTerminate = false;
+	
+	//app version
+	int majorVersion, minorVersion, revision;
+	std::string versionSuffix;
+	//eng version
+	const int majorVersion_eng = 1, minorVersion_eng = 0, revision_eng = 0;
+	std::string versionSuffix_eng = "Alpha";
 };
 
 #endif // ENGINE_H

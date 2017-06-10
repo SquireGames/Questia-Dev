@@ -7,6 +7,10 @@
 #include <stdlib.h> //std::atoi
 #include <string>
 
+#include <string>
+#include <locale>
+#include <codecvt>
+
 //boost
 //#include <boost/algorithm/string.hpp> //boost::split, boost::is_any_of
 
@@ -20,8 +24,9 @@ enum Direction {none = 0, up = 1, upRight = 2, right = 3, downRight = 4, down = 
 bool isNumber(const std::string& string);
 bool isWithAnyCharacter(const std::string& string, const std::string& characters);
 //conversion
-int   asInt(const std::string& string);
-float asFloat(const std::string& string);
+int   toInt(const std::string& string);
+float toFloat(const std::string& string);
+std::u32string toU32(const std::string& string);
 //combination
 std::vector <std::string> separateString(const std::string& saveString, const char& delimiter);
 std::string conjoinString(const std::vector<std::string>& stringParts, const char& delimiter);

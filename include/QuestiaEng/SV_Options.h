@@ -22,8 +22,9 @@ public:
     int getWindowMode();
     int getFps();	
     std::string getFont();
+	std::string getGuiPack();	
     int getMusicVolume();	
-    std::string getGuiPack();		
+	std::string getLang();
     ctr::Input getKey_moveUp();		
     ctr::Input getKey_moveDown();	
     ctr::Input getKey_moveLeft();	
@@ -38,8 +39,9 @@ public:
     std::string getWindowMode_name();
     std::string getFps_name();
     std::string getFont_name();
+	std::string getGuiPack_name();
+	std::string getLang_name();
     std::string getMusicVolume_name();
-    std::string getGuiPack_name();
     std::string getKey_moveUp_name();
     std::string getKey_moveDown_name();
     std::string getKey_moveLeft_name();
@@ -64,6 +66,8 @@ private:
     std::string font = "Lato-Regular.ttf";
     //guiPack: x = guiPack folder name
     std::string guiPack = "Default";
+	//lang: x = lang folder dir name
+	std::string language = "en";
 
     //musicVolume: x = volume out of 100
     int musicVolume = 0;
@@ -85,6 +89,7 @@ private:
     const std::string fps_name         = "Frames Per Second";
     const std::string font_name        = "Font";
     const std::string guiPack_name     = "Gui Pack";
+    const std::string language_name    = "Language";
     const std::string musicVolume_name = "Music Volume";
 
     //key bindings

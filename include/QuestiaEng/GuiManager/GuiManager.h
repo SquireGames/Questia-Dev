@@ -16,6 +16,8 @@
 #include "QuestiaEng/GuiManager/Button.h"
 #include "QuestiaEng/Utl/Type/Vector2.h"
 
+#include "QuestiaEng/Utl/Savefile.h"
+
 class GuiManager
 {
 public:
@@ -96,6 +98,27 @@ public:
 	void setFont(sf::Font buttonFont);
 	sf::Font* getFont() {return &buttonFont;}
 
+	void setLang(std::string lang)
+	{
+		this->lang = lang;
+		SaveFile langSave("Data/Language Pack/" + lang + "/gui.txt", true);
+		if(langSave.readFile('='))
+		{
+			langPairs = langSave.getSaveList_uni();
+		}
+	}
+	std::u32string getText(std::string key)
+	{
+		std::u32string str = utl::toU32(key);
+		for(auto& p : langPairs)
+		{
+			if(p.first == str)
+			{
+				return p.second;
+			}
+		}
+		return U"nil";
+	}
 private:
 	struct ListData
 	{
@@ -172,6 +195,8 @@ private:
 	void refreshDrawVector();
 
 	sf::Font buttonFont;
+	std::string lang;
+	std::vector<std::pair<std::u32string, std::u32string>> langPairs;
 };
 
 
