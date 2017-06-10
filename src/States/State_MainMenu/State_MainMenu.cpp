@@ -8,6 +8,8 @@ State_MainMenu::State_MainMenu()
 void State_MainMenu::init()
 {
 	eng->guiLd().loadGui(eng->gui(), "mainMenu");
+	eng->gui().setBtnAtr("versionText", "text", gui::BtnAtrChar::text, eng->gui().getText("T_QDevTools") + U" " + utl::toU32(eng->getVersion()));
+	eng->gui().setBtnAtr("versionText_eng", "text", gui::BtnAtrChar::text, eng->gui().getText("T_Eng_Version") + U" " + utl::toU32(eng->getVersion_eng()));
 }
 
 State_MainMenu::~State_MainMenu()
