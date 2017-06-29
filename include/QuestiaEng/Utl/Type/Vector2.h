@@ -73,7 +73,6 @@ struct Vector2f
     }
     Vector2f operator-(const Vector2f& other)
     {
-        //TODO test if right order
         return Vector2f(x - other.x, y - other.y);
     }
     Vector2f& operator+=(const Vector2f& other)

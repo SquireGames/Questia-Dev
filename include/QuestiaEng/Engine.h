@@ -10,6 +10,7 @@
 #include "QuestiaEng/GuiManager/GuiLoader.h"
 #include "QuestiaEng/TileEngine/TileEngine.h"
 #include "QuestiaEng/TileEngine/TileEngine_Editor.h"
+#include "QuestiaEng/EntityManager/EntityManager.h"
 #include "QuestiaEng/StateManager/StateManager.h"
 
 #include "QuestiaEng/SV_Options.h"
@@ -34,7 +35,8 @@ public:
 	void terminate() {toTerminate = true;}
 
 	//input
-	MouseListener& 		mouse() {return mouseListener;}
+	MouseListener& 		mouse() 	{return mouseListener;}
+	ctr::Input			lastKey()	{return lastInput;}
 
 	//interfaces
 	sf::RenderWindow&   win()   {return window;}
@@ -44,11 +46,15 @@ public:
 	GuiLoader& 			guiLd() {return guiLoader;}
 	TileEngine&	 		tile()	{return tileEngine;}
 	TileEngine_Editor&	tileEd(){return tileEngineEditor;}
+	EntityManager& 		ent()	{return entityManager;}
 	StateManager& 		state() {return stateManager;}
+	SV_Options& 		sv() 	{return saveFile;}
 	
 	//versions
 	std::string getVersion();
 	std::string getVersion_eng();
+	
+	void fixWindowScale();
 
 private:
 	//options
@@ -71,13 +77,15 @@ private:
 	GuiLoader guiLoader;
 	TileEngine tileEngine;
 	TileEngine_Editor tileEngineEditor;
+	EntityManager entityManager;
 	StateManager stateManager;
 
-	//text
-	sf::Font font;
-
 	//input buffer
+	//saved as a char32_t to easily only allow ranges of unicode
 	std::u32string inputBuffer;
+	
+	//most recent input method (e.g. for key binding)
+	ctr::Input lastInput = ctr::Input::None;
 
 	//timing
 	sf::Clock clock;

@@ -18,34 +18,10 @@ enum class MovementControl
 class Entity_Player : public Entity_Living
 {
 public:
-    Entity_Player(unsigned int id, EntityManager& entityManager, ResourceManager& resourceManager);
-    ~Entity_Player();
+    Entity_Player(unsigned int id, EntityManager& entityManager, ResourceManager& resourceManager, utl::Vector2f coords);
+    virtual ~Entity_Player() = 0;
 
-    void processInput(ctr::KeyAction action, bool isPressed);
-    void mouseInput(utl::Vector2f mousePosition);
-    void update();
-    void draw(sf::RenderWindow& window, const DrawLayer& drawLayer);
-
-    //movement
-    MovementControl mov_control = MovementControl::inControl;
-    std::vector<utl::Vector2f> mov_forces_external;
-    float mov_speedBase = 2.5;
-    float mov_speedModifier = 0;
-    float mov_speedMultiplier = 1;
-
-    utl::Direction facingDirection = utl::Direction::up;
-
-    utl::Vector2f attackOrigin = utl::Vector2f(0,0);
-
-    int exp_general = 0;
 private:
-    SpriteSheet spriteSheet;
-    utl::Vector2ui spriteSheetIndex = utl::Vector2ui(0,0);
-
-    bool isMovingUp    = false;
-    bool isMovingDown  = false;
-    bool isMovingLeft  = false;
-    bool isMovingRight = false;
 };
 
 #endif // ENTITY_PLAYER_H

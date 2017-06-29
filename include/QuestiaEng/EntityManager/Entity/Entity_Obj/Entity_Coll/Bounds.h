@@ -7,25 +7,27 @@
 
 struct Circ
 {
-    Circ(float _radius):radius(_radius){}
+    Circ(float radius):radius(radius){}
     float radius;
 };
 struct Rect
 {
-    Rect(utl::Vector2f _dims, utl::Vector2f _origin):dims(_dims), origin(_origin){}
+    Rect(utl::Vector2f dims, utl::Vector2f origin):dims(dims), origin(origin){}
     utl::Vector2f dims;
     utl::Vector2f origin;
 };
 struct Poly
 {
-    Poly(utl::Vector2f _origin, float _angle, std::vector<utl::Vector2f> _points): origin(_origin), angle(_angle), points(_points){}
+    Poly(utl::Vector2f origin, float angle, utl::Vector2f* points, int len): origin(origin), angle(angle), points(points), len(len){}
     utl::Vector2f origin;
     float angle;
-    std::vector<utl::Vector2f> points;
+	//c style storage of points
+    utl::Vector2f* points;
+	unsigned int len;
 };
 struct Dot
 {
-    Dot(utl::Vector2f _point):point(_point){}
+    Dot(utl::Vector2f point):point(point){}
     utl::Vector2f point;
 };
 struct None {};
@@ -41,7 +43,7 @@ public:
 
     enum class Shape{circ, rect, poly, dot, none};
 
-    Shape getShape();
+    Shape getShape() const;
 
     utl::Vector2f rel_coords = utl::Vector2f(0,0);
     float maxRadius = -1;

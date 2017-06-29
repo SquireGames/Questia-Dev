@@ -82,7 +82,8 @@ enum class Input : int
     MMouse    = 1 + Input::RMouse,
     Macro1    = 1 + Input::MMouse,
     Macro2    = 1 + Input::Macro1,
-    InputCount = 1 + Input::Macro2
+	None      = 1 + Input::Macro2,
+    InputCount = 1 + Input::None
 };
 
 //returns name of input

@@ -14,7 +14,7 @@ public:
     SV_Options();
     ~SV_Options();
 
-    //void saveOption(Option_Base* option, std::string optionName);
+    void saveOption(const std::string& optionName, const std::string& valueStr);
     void writeOptions();
 
     void reloadOptions();
@@ -58,7 +58,7 @@ private:
     SaveFile saveFile;
 
     ///options
-    //windowMode: 0 = full-screen, 1 = 720p windowed, 2+ = 1080p windowed
+    //windowMode: 0 = full-screen, 1+ = 1080p windowed
     int windowMode = 0;
     //fps: -1 = Unlimited, 0 = V-Sync, 1+ = x fps
     int fps = 0;

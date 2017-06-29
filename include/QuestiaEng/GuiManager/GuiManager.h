@@ -107,7 +107,8 @@ public:
 			langPairs = langSave.getSaveList_uni();
 		}
 	}
-	std::u32string getText(std::string key)
+	//TODO Have different context's for different categories, aka gui, items..
+	std::u32string getText(const std::string& key)
 	{
 		std::u32string str = utl::toU32(key);
 		for(auto& p : langPairs)

@@ -10,13 +10,16 @@
 class GuiLoader
 {
 public:
-    GuiLoader();
+    GuiLoader(GuiManager& guiManager);
     ~GuiLoader();
 
-    void loadGui(GuiManager& guiManager, const std::string& gui);
+	//TODO have instance of guiManager
+    void loadGui(const std::string& gui);
     void setGuiPack(const std::string& guiPack);
 
 private:
+	GuiManager& guiManager;
+
     std::string primaryPack = "Default";
     std::string secondaryPack = "Default";
 

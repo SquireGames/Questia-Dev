@@ -14,6 +14,7 @@
 
 #include "QuestiaEng/Utl/Toggler.h"
 #include "QuestiaEng/Utl/EdgeDetector.h"
+#include "QuestiaEng/Utl/Utl.h"
 
 class State_MapEditor : public State
 {
@@ -49,10 +50,17 @@ private:
 	QueryWindow qOpenMap;
 	QueryWindow qSaveMapAs;
 	
+	QueryWindow qBorderMapDir;
+	enum class qDirMode {BorderName, BorderOffset} qBorderMode = qDirMode::BorderName;
+	utl::Direction qBorderDirection = utl::Direction::right;
+	QueryWindow qBorderMapSelec;
+	QueryWindow qBorderMapOffset;
+	
 	utl::Toggler tg_fullScreen;
 	utl::EdgeDetector key_fullScreen;
 	
 	utl::Toggler tg_grid;
+	utl::Toggler tg_border;
 	
 	utl::Vector2i selectedTile;
 	utl::Vector2i selectedSpan;
@@ -63,7 +71,6 @@ private:
 	int moveSpeed = 5;
 	float mapZoomRatio = 1;
 	float sheetZoomRatio = 1;
-	
 };
 
 #endif // STATE_MAPEDITOR_H

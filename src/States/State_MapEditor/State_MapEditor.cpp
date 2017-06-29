@@ -12,6 +12,7 @@ State_MapEditor::State_MapEditor():
 	, tg_fullScreen(true)
 	, key_fullScreen(false)
 	, tg_grid(true)
+	, tg_border(true)
 	, selectedTile(-1, -1)
 	, selectedSpan(-1, -1)
 {
@@ -26,13 +27,10 @@ void State_MapEditor::init()
 	mainTab.addEntry("Open Map", "openMap");
 	mainTab.addEntry("Save", "save");
 	mainTab.addEntry("Save as", "saveAs");
-	/*
-	mainTab.addTab("Edit");
-	mainTab.addEntry("Undo", "undo");
-	mainTab.addEntry("Redo", "redo");
-	*/
+
 	mainTab.addTab("View");
 	mainTab.addEntry("Toggle Grid", "toggleGrid");
+	mainTab.addEntry("Bordering Maps", "toggleBorder");
 	mainTab.addSpace(50);
 	mainTab.addTab("Map", "viewMap");
 	mainTab.addTab("Tile Sheet", "viewSheet");
@@ -44,6 +42,9 @@ void State_MapEditor::init()
 	mapEditTab.addEntry("Single Tile", "sel_tile");
 	mapEditTab.addEntry("Span", "sel_span");
 	mapEditTab.addEntry("Erasor", "sel_eras");
+	mapEditTab.addTab("Border");
+	mapEditTab.addEntry("Change Border", "bor_add");
+	mapEditTab.addEntry("Border Offset", "bor_off");
 	mapEditTab.init("eTab", eng->gui(), eng->guiLd());
 	mapEditTab.setBelow(mainTab);
 	eng->guiH().reg(&mapEditTab);
@@ -98,7 +99,7 @@ void State_MapEditor::init()
 	eng->guiH().reg(&qNewMap);
 	eng->guiH().regInput(&qNewMap);
 	//Open Map
-	for(auto& it : utl::getFiles("Maps", false))
+	for(auto& it : utl::getFiles("Data/Maps", false))
 	{
 		qOpenMap.addQuery("choice", it, QueryWindow::QueryType::Choice_string);
 	}
@@ -125,10 +126,74 @@ void State_MapEditor::init()
 		eng->tileEd().overrideMap();
 		qOpenMap.addQuery("choice", qSaveMapAs.getResult_string("map_name"), QueryWindow::QueryType::Choice_string);
 		qOpenMap.reInit();
+		qBorderMapDir.addQuery("choice", qSaveMapAs.getResult_string("map_name"), QueryWindow::QueryType::Choice_string);
+		qBorderMapDir.reInit();
 		qSaveMapAs.resetQueries();
 	});
 	eng->guiH().reg(&qSaveMapAs);
 	eng->guiH().regInput(&qSaveMapAs);
+
+	//Bordering maps
+	//qBorderMapDir is used for both chosing a border map (qBorderMapSelec) and chosing a border map offset(qBorderMapOff)
+	//the direction and which qBorder window are 'saved' using qBorderDirection and qBorderMode respectively
+	
+	//border map offset selection
+	qBorderMapOffset.addQuery("offset", "Offset: ", QueryWindow::QueryType::Input_int);
+	qBorderMapOffset.init("Border Offset", eng->gui(), &eng->guiLd(), [&]()
+	{
+		eng->tileEd().changeBorderOffset(qBorderDirection, qBorderMapOffset.getResult_int("offset"));
+		qBorderMapOffset.resetQueries();
+	});
+	eng->guiH().reg(&qBorderMapOffset);
+	eng->guiH().regInput(&qBorderMapOffset);
+	
+	//border map selection
+	for(auto& it : utl::getFiles("Data/Maps", false))
+	{
+		qBorderMapSelec.addQuery("choice", it, QueryWindow::QueryType::Choice_string);
+	}
+	qBorderMapSelec.addQuery("choice", "None", QueryWindow::QueryType::Choice_string);
+	qBorderMapSelec.init("Border Selection", eng->gui(), &eng->guiLd(), [&]()
+	{
+		if(qBorderMapSelec.getChoice_string() == "None")
+		{
+			eng->tileEd().changeBorderMap(qBorderDirection, std::string());
+		}
+		else
+		{
+			eng->tileEd().changeBorderMap(qBorderDirection, qBorderMapSelec.getChoice_string());
+		}
+		qBorderMapSelec.resetQueries();
+	});
+	eng->guiH().reg(&qBorderMapSelec);
+	eng->guiH().regInput(&qBorderMapSelec);
+	
+	//direction selection
+	qBorderMapDir.addQuery("choice", "Up", QueryWindow::QueryType::Choice_string);
+	qBorderMapDir.addQuery("choice", "Right", QueryWindow::QueryType::Choice_string);
+	qBorderMapDir.addQuery("choice", "Down", QueryWindow::QueryType::Choice_string);
+	qBorderMapDir.addQuery("choice", "Left", QueryWindow::QueryType::Choice_string);
+	qBorderMapDir.init("Border Direction", eng->gui(), &eng->guiLd(), [&]()
+	{
+		const std::string& choice = qBorderMapDir.getChoice_string();
+		qBorderDirection = (choice == "Up") ? utl::Direction::up :
+		                   (choice == "Right") ? utl::Direction::right :
+		                   (choice == "Down") ? utl::Direction::down :
+		                   utl::Direction::left;
+		switch(qBorderMode)
+		{
+		case qDirMode::BorderName:
+			qBorderMapSelec.setActive(true);
+			break;
+		case qDirMode::BorderOffset:
+			qBorderMapOffset.setActive(true);
+			break;
+		}
+
+		qBorderMapDir.resetQueries();
+	});
+	eng->guiH().reg(&qBorderMapDir);
+	eng->guiH().regInput(&qBorderMapDir);
 }
 
 State_MapEditor::~State_MapEditor()
@@ -235,7 +300,6 @@ void State_MapEditor::update(sf::Time elapsedTime)
 			{
 				qNewMap.setActive(true);
 			}
-
 		}
 		else if(eng->gui().isClicked("openMap"))
 		{
@@ -258,6 +322,10 @@ void State_MapEditor::update(sf::Time elapsedTime)
 		else if(eng->gui().isClicked("toggleGrid"))
 		{
 			eng->tileEd().showGridLines(tg_grid.toggle());
+		}
+		else if(eng->gui().isClicked("toggleBorder"))
+		{
+			eng->tileEd().showBorderMaps(tg_border.toggle());
 		}
 		else if(eng->gui().isClicked("viewMap"))
 		{
@@ -286,6 +354,22 @@ void State_MapEditor::update(sf::Time elapsedTime)
 		{
 			tileID = 0;
 			mapStatus.updateVal("selected tile: ", "Erasor");
+		}
+		else if(eng->gui().isClicked("bor_add"))
+		{
+			if(!isQueryHovered())
+			{
+				qBorderMode = qDirMode::BorderName;
+				qBorderMapDir.setActive(true);
+			}
+		}
+		else if(eng->gui().isClicked("bor_off"))
+		{
+			if(!isQueryHovered())
+			{
+				qBorderMode = qDirMode::BorderOffset;
+				qBorderMapDir.setActive(true);
+			}
 		}
 	}
 	if(!isGuiHovered())
@@ -340,8 +424,8 @@ void State_MapEditor::update(sf::Time elapsedTime)
 				{
 					if(eng->tileEd().getTile_tileState(selectedTile.x, selectedTile.y) != nullptr)
 					{
-						tileID = eng->tileEd().getTileID(eng->tileEd().getTile_tileState(selectedTile.x, selectedTile.y)->source);
-						mapStatus.updateVal("selected tile: ", eng->tileEd().getTile_tileState(selectedTile.x, selectedTile.y)->source.substr(23));
+						tileID = eng->tileEd().getTileID(eng->tileEd().getTile_tileState(selectedTile.x, selectedTile.y)->getDisplay());
+						mapStatus.updateVal("selected tile: ", eng->tileEd().getTile_tileState(selectedTile.x, selectedTile.y)->getDisplay());
 					}
 				}
 			}
@@ -426,5 +510,5 @@ bool State_MapEditor::isGuiHovered()
 
 bool State_MapEditor::isQueryHovered()
 {
-	return qNewMap.isActive() || qOpenMap.isActive() || qSaveMapAs.isActive();
+	return qNewMap.isActive() || qOpenMap.isActive() || qSaveMapAs.isActive() || qBorderMapDir.isActive() || qBorderMapSelec.isActive() || qBorderMapOffset.isActive();
 }

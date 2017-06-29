@@ -17,7 +17,7 @@
 namespace utl
 {
 ///basic
-enum Direction {none = 0, up = 1, upRight = 2, right = 3, downRight = 4, down = 5, downLeft = 6, left = 7, upLeft = 8};
+enum Direction : char {none = 0, up = 1, upRight = 2, right = 3, downRight = 4, down = 5, downLeft = 6, left = 7, upLeft = 8, DirectionCount = 9};
 
 ///types
 //comparison

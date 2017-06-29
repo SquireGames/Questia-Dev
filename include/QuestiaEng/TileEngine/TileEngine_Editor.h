@@ -13,6 +13,10 @@
 
 #include "QuestiaEng/TileEngine/SV_TileEngine.h"
 
+//TODO Add undo/redo
+//TODO Add resize
+//TODO Add copy + paste
+
 class TileEngine_Editor
 {
 public:
@@ -24,14 +28,13 @@ public:
 	void closeMap();
 	
 	void setViewportSize(float width, float height) {tileEngine.setViewportSize(width, height);}
-	void setPosition(int x, int y) {tileEngine.setPosition(x, y);}
+	void setPosition(int x, int y);
 	bool isLoaded() {return tileEngine.isLoaded();}
-	void draw(){drawMap();}
 
 	///gets called instead of base class
 	void loadMap(const std::string& mapName);
 	//draws map with sprites
-	void drawMap();
+	void draw();
 	//draws out all tiles
 	void drawTiles(sf::Font& font);
 	//only draws specific layers (transparency out of 100)
@@ -41,6 +44,7 @@ public:
 	void overrideMap();
 
 	void showGridLines(bool gridLinesVisible) {isGridDrawn = gridLinesVisible;}
+	void showBorderMaps(bool gridMapVisible)  {areBordersDrawn = gridMapVisible;}
 
 	//reset transparency
 	void resetTileAlpha();
@@ -49,9 +53,6 @@ public:
 	unsigned int getMapWidth();
 	unsigned int getMapHeight();
 	unsigned int getMapLayers();
-
-	//debugging
-	void displayTiles();
 
 	//hover over
 	void hoverTile(int x, int y);
@@ -65,28 +66,35 @@ public:
 	int getTileID(const std::string& source);
 
 	void replaceTile(int newTile, int x, int y, int layer);
+	
+	//border map editing
+	void changeBorderMap(utl::Direction dir, const std::string& mapName);
+	void changeBorderOffset(utl::Direction dir, int offset);
 
 	//for 'save as' functionality
 	void changeMapName(const std::string& newName);
+	
+	//debugging
+	//prints all tiles and folders into consolse
+	void printTiles();
 
 private:
+	//gets all tiles in a folder
+	std::pair<std::string, std::vector<Tile*> >& getFolder(const std::string& dir);
+
 	sf::RenderWindow& window;
 	ResourceManager& resourceManager;
 	TileEngine& tileEngine;
 
 	//stores all tiles for drawing
-	std::vector<std::pair<std::string, std::vector<Tile*> > > sortedTiles;
+	std::vector<std::pair<std::string, std::vector<Tile*>>> sortedTiles;
 
-	//grid
 	sf::VertexArray gridLines;
-
-	//save
+	
 	SV_TileEngine saveFile;
 	
-	bool isGridDrawn = true;
-
-	//helpers
-	std::pair<std::string, std::vector<Tile*> >& getFolder(const std::string& dir);
+	bool isGridDrawn = true;	
+	bool areBordersDrawn = true;	
 };
 
 #endif // TILEENGINE_EDITOR_H
