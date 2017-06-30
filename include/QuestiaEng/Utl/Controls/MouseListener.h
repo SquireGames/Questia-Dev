@@ -13,7 +13,10 @@ class MouseListener
 public:
     MouseListener();
 
+	//when updating the mouse, first call update to reset all pressed and released events
     void update();
+    void update_pressed(sf::Mouse::Button mouse);
+    void update_released(sf::Mouse::Button mouse);
 	void setScroll(int newScroll) {scroll = newScroll;}
 	void setMousePos(utl::Vector2f newMousePos){mousePos = newMousePos;}
 	

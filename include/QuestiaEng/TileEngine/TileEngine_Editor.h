@@ -70,6 +70,9 @@ public:
 	//border map editing
 	void changeBorderMap(utl::Direction dir, const std::string& mapName);
 	void changeBorderOffset(utl::Direction dir, int offset);
+	
+	std::string getBorderMap(utl::Direction dir);
+	std::string getMapName();
 
 	//for 'save as' functionality
 	void changeMapName(const std::string& newName);

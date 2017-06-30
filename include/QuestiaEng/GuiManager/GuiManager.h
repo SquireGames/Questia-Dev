@@ -329,19 +329,28 @@ inline Button& GuiManager::emplaceButton(bool isTemplate, const std::string& but
 		return buttons.at(pos);
 	}
 	buttons.emplace_back(Button(window, resourceManager, buttonFont, isTemplate, buttonID, templateID));
+	refreshDrawVector();
 	return buttons.back();
 }
 inline Button& GuiManager::copyButton(Button& old, const std::string& buttonName, int templateID)
 {
 	int buttonID = getNewID(buttonName);
+	int oldButtonID = old.buttonID;
+	if(buttons.capacity() < (buttons.size() + 2))
+	{
+		buttons.reserve(buttons.size() + 20);
+	}
+	Button& realOld = buttons.at(getPos(oldButtonID));
+	
 	if(unusedPos.size())
 	{
 		int pos = unusedPos.back();
 		unusedPos.pop_back();
-		buttons.at(pos) = Button(old, buttonID, templateID);
+		buttons.at(pos) = Button(realOld, buttonID, templateID);
 		return buttons.at(pos);
 	}
-	buttons.emplace_back(Button(old, buttonID, templateID));
+	buttons.emplace_back(Button(realOld, buttonID, templateID));
+	refreshDrawVector();
 	return buttons.back();
 }
 inline int GuiManager::getPos(const int buttonID)
