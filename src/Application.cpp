@@ -3,7 +3,7 @@
 Application::Application():
 	eng("Questia Editor", 128, 0, 0, 0, "Alpha")
 {
-	eng.guiLd().setGuiPack("Default");
+	eng.gui().setGuiPack("Default");
 	
 	//enforce windowed mode
 	if(eng.sv().getWindowMode() != 1)

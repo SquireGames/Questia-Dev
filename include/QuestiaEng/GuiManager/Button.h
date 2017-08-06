@@ -56,38 +56,38 @@ enum class BtnAtrChar
 class Button
 {
 public:
-	//ctor + dtor
-	Button(sf::RenderWindow& window, ResourceManager& resourceManager, sf::Font& buttonFont, bool isTemplate, int buttonID, int buttonGroupID = -1);
-	Button(const Button& oldButton, int buttonID, int buttonGroupID = -1);
-	~Button() = default;
+	Button(sf::RenderWindow& window, ResourceManager& resourceManager, sf::Font& buttonFont, bool isTemplate, int buttonID, int buttonGroupID = -1) noexcept;
+	//copy ctor creates 'real' buttons from templates or other 'real' buttons (copy does not hold template-ness)
+	Button(const Button& oldButton, int buttonID, int buttonGroupID = -1) noexcept;
+	Button(Button&&) noexcept = default;
+	Button& operator= (const Button& other) noexcept;
+	Button& operator= (Button&&) noexcept = default;
+	~Button() noexcept = default;
+
+	void addBtnAtr(const std::string& atrName, gui::BtnAtr buttonAtr) noexcept;
+
+	void setButton(gui::BtnChar buttonChar, const std::string& value) noexcept;
+	void setButton(gui::BtnChar buttonChar, const char* value) noexcept;
+	void setButton(gui::BtnChar buttonChar, bool value) noexcept;
+	void setButton(gui::BtnChar buttonChar, int value) noexcept;
+	void setButton(gui::BtnChar buttonChar, std::pair <int, int> value) noexcept;
+
+	void setBtnAtr(const std::string& atrName, gui::BtnAtrChar atrChar, const std::string& value) noexcept;
+	void setBtnAtr(const std::string& atrName, gui::BtnAtrChar atrChar, const std::u32string& value) noexcept;
+	void setBtnAtr(const std::string& atrName, gui::BtnAtrChar atrChar, std::pair<int, int> value) noexcept;
+	void setBtnAtr(const std::string& atrName, gui::BtnAtrChar atrChar, sf::Color color) noexcept;
+	void setBtnAtr(const std::string& atrName, gui::BtnAtrChar atrChar, int value) noexcept;
+	void setBtnAtr(const std::string& atrName, gui::BtnAtrChar atrChar, char value) noexcept;
+
+	void update(std::pair <int, int> mouseCoords) noexcept;
+	void draw() noexcept;
 	
-	//identical copy of other button
-	Button& operator= (const Button& other);
+	bool count(gui::BtnAtr atr, const std::string& atrName) const noexcept;
 
-	void addBtnAtr(const std::string& atrName, gui::BtnAtr buttonAtr);
-
-	void setButton(gui::BtnChar buttonChar, const std::string& value);
-	void setButton(gui::BtnChar buttonChar, const char* value);
-	void setButton(gui::BtnChar buttonChar, bool value);
-	void setButton(gui::BtnChar buttonChar, int value);
-	void setButton(gui::BtnChar buttonChar, std::pair <int, int> value);
-
-	void setBtnAtr(const std::string& atrName, gui::BtnAtrChar atrChar, const std::string& value);
-	void setBtnAtr(const std::string& atrName, gui::BtnAtrChar atrChar, const std::u32string& value);
-	void setBtnAtr(const std::string& atrName, gui::BtnAtrChar atrChar, std::pair<int, int> value);
-	void setBtnAtr(const std::string& atrName, gui::BtnAtrChar atrChar, sf::Color color);
-	void setBtnAtr(const std::string& atrName, gui::BtnAtrChar atrChar, int value);
-	void setBtnAtr(const std::string& atrName, gui::BtnAtrChar atrChar, char value);
-
-	void update(std::pair <int, int> mouseCoords);
-	void draw();
-
-	//refs
 	sf::RenderWindow& window;
 	ResourceManager& resourceManager;
 	sf::Font& buttonFont;
-
-	//vars
+	
 	std::pair <int, int> buttonPosition = std::make_pair(0,0);
 	std::pair <int, int> buttonBounds;
 	int buttonID;
@@ -104,8 +104,13 @@ public:
 	//atrs
 	struct RegularSprite
 	{
-		RegularSprite(std::string name):atrName(name) {}
-		RegularSprite(const RegularSprite& old):atrName(old.atrName), sprite(old.sprite), position(old.position) {}
+		RegularSprite(std::string name) noexcept: atrName(name){}
+		RegularSprite(const RegularSprite&) = default;
+		RegularSprite(RegularSprite&&) noexcept = default;
+		RegularSprite& operator= (const RegularSprite&) = default;
+		RegularSprite& operator= (RegularSprite&&) noexcept = default;
+		~RegularSprite() noexcept = default;
+		
 		std::string atrName;
 		sf::Sprite sprite;
 		std::pair <int, int> position = std::make_pair(0,0);
@@ -113,12 +118,17 @@ public:
 	};
 	struct ButtonText
 	{
-		ButtonText(std::string name, sf::Font& font):atrName(name)
+		ButtonText(std::string name, sf::Font& font) noexcept: atrName(name)
 		{
 			text.setFont(font);
 			text.setFillColor(sf::Color::Black); text.setOutlineColor(sf::Color::Black);
 		}
-		ButtonText(const ButtonText& old):atrName(old.atrName), text(old.text), position(old.position) {}
+		ButtonText(const ButtonText&) = default;
+		ButtonText(ButtonText&&) = default;
+		ButtonText& operator= (const ButtonText&) = default;
+		ButtonText& operator= (ButtonText&&) = default;
+		~ButtonText() noexcept = default;
+		
 		std::string atrName;
 		sf::Text text;
 		std::pair <int, int> position = std::make_pair(0,0);
@@ -126,12 +136,17 @@ public:
 	};
 	struct OverlaySprite
 	{
-		OverlaySprite(std::string name, sf::Vector2f bounds):atrName(name)
+		OverlaySprite(std::string name, sf::Vector2f bounds) noexcept: atrName(name)
 		{
 			rectOverlay.setFillColor(sf::Color(0,0,0, 100));
 			rectOverlay.setSize(bounds);
 		}
-		OverlaySprite(const OverlaySprite& old):atrName(old.atrName), rectOverlay(old.rectOverlay), position(old.position) {}
+		OverlaySprite(const OverlaySprite&) = default;
+		OverlaySprite(OverlaySprite&&) = default;
+		OverlaySprite& operator= (const OverlaySprite&) = default;
+		OverlaySprite& operator= (OverlaySprite&&) noexcept = default;
+		~OverlaySprite() noexcept = default;
+		
 		std::string atrName;
 		sf::RectangleShape rectOverlay;
 		std::pair <int, int> position = std::make_pair(0,0);
@@ -140,10 +155,13 @@ public:
 	};
 	struct PercentSprite
 	{
-		PercentSprite(std::string name):atrName(name) {}
-		PercentSprite(const PercentSprite& old):atrName(old.atrName), sprite(old.sprite), rectOverlay(old.rectOverlay),
-			spritePercentage(old.spritePercentage), directionOfGap(old.directionOfGap),
-			originalTextureRect(old.originalTextureRect), position(old.position) {}
+		PercentSprite(std::string name) noexcept: atrName(name){}
+		PercentSprite(const PercentSprite&) = default;
+		PercentSprite(PercentSprite&&) = default;
+		PercentSprite& operator= (const PercentSprite&) = default;
+		PercentSprite& operator= (PercentSprite&&) noexcept = default;
+		~PercentSprite() noexcept = default;
+		
 		std::string atrName;
 		sf::Sprite sprite;
 		sf::RectangleShape rectOverlay;
@@ -154,7 +172,6 @@ public:
 		bool isChanged = true;
 	};
 
-	//holds attributes
 	std::vector<RegularSprite> sprites;
 	std::vector<ButtonText> texts;
 	std::vector<OverlaySprite> hovers;
@@ -162,7 +179,7 @@ public:
 
 private:
 	template<class T>
-	inline int count(const std::string& name, const std::vector<T>& vec)
+	inline int count(const std::string& name, const std::vector<T>& vec) const noexcept
 	{
 		for(unsigned int it = 0; it < vec.size(); it++)
 		{

@@ -34,8 +34,8 @@ void State_MapEditor::init()
 	mainTab.addSpace(50);
 	mainTab.addTab("Map", "viewMap");
 	mainTab.addTab("Tile Sheet", "viewSheet");
-	mainTab.init("mTab", eng->gui(), eng->guiLd());
-	eng->guiH().reg(&mainTab);
+	mainTab.init("mTab", eng->gui());
+	eng->guiH().regMouseUpdates(&mainTab);
 
 	mapEditTab.addTab("Tool");
 	mapEditTab.addEntry("None", "sel_none");
@@ -45,9 +45,9 @@ void State_MapEditor::init()
 	mapEditTab.addTab("Border");
 	mapEditTab.addEntry("Change Border", "bor_add");
 	mapEditTab.addEntry("Border Offset", "bor_off");
-	mapEditTab.init("eTab", eng->gui(), eng->guiLd());
+	mapEditTab.init("eTab", eng->gui());
 	mapEditTab.setBelow(mainTab);
-	eng->guiH().reg(&mapEditTab);
+	eng->guiH().regMouseUpdates(&mapEditTab);
 
 	mapStatus.track("x: ", 0, 45);
 	mapStatus.track("y: ", 0, 45);
@@ -65,8 +65,8 @@ void State_MapEditor::init()
 	mapStatus.track("right: ", "none", mapNameSpace);
 	mapStatus.track("down: ", "none", mapNameSpace);
 	mapStatus.track("left: ", "none", mapNameSpace);
-	mapStatus.init("mStats", eng->gui(), eng->guiLd());
-	eng->guiH().reg(&mapStatus);
+	mapStatus.init("mStats", eng->gui());
+	eng->guiH().regMouseUpdates(&mapStatus);
 
 	///Queries
 	//New map
@@ -74,7 +74,7 @@ void State_MapEditor::init()
 	qNewMap.addQuery("map_x", "Width: ",  QueryWindow::QueryType::Input_int);
 	qNewMap.addQuery("map_y", "Height: ", QueryWindow::QueryType::Input_int);
 	qNewMap.addQuery("map_z", "Layers: ", QueryWindow::QueryType::Input_int);
-	qNewMap.init("New Map", eng->gui(), &eng->guiLd(), [&]()
+	qNewMap.init("New Map", eng->gui(), [&]()
 	{
 		std::string mapName;
 		int x, y, z;
@@ -108,14 +108,14 @@ void State_MapEditor::init()
 		tileID = -7;
 		mapStatus.updateVal("selected tile: ", "none");
 	});
-	eng->guiH().reg(&qNewMap);
-	eng->guiH().regInput(&qNewMap);
+	eng->guiH().regMouseUpdates(&qNewMap);
+	eng->guiH().regTextUpdates(&qNewMap);
 	//Open Map
 	for(auto& it : utl::getFiles("Data/Maps", false))
 	{
 		qOpenMap.addQuery("choice", it, QueryWindow::QueryType::Choice_string);
 	}
-	qOpenMap.init("Open Map", eng->gui(), &eng->guiLd(), [&]()
+	qOpenMap.init("Open Map", eng->gui(), [&]()
 	{
 		eng->tileEd().overrideMap();
 		eng->tileEd().closeMap();
@@ -132,11 +132,11 @@ void State_MapEditor::init()
 		tileID = -7;
 		mapStatus.updateVal("selected tile: ", "none");
 	});
-	eng->guiH().reg(&qOpenMap);
-	eng->guiH().regInput(&qOpenMap);
+	eng->guiH().regMouseUpdates(&qOpenMap);
+	eng->guiH().regTextUpdates(&qOpenMap);
 	//Save map as
 	qSaveMapAs.addQuery("map_name", "Map Name: ",QueryWindow::QueryType::Input_string);
-	qSaveMapAs.init("Save As",  eng->gui(), &eng->guiLd(), [&]()
+	qSaveMapAs.init("Save As",  eng->gui(), [&]()
 	{
 		eng->tileEd().overrideMap();
 		eng->tileEd().changeMapName(qSaveMapAs.getResult_string("map_name"));
@@ -149,8 +149,8 @@ void State_MapEditor::init()
 		mapStatus.updateVal("map: ", qSaveMapAs.getResult_string("map_name"));
 		qSaveMapAs.resetQueries();
 	});
-	eng->guiH().reg(&qSaveMapAs);
-	eng->guiH().regInput(&qSaveMapAs);
+	eng->guiH().regMouseUpdates(&qSaveMapAs);
+	eng->guiH().regTextUpdates(&qSaveMapAs);
 
 	//Bordering maps
 	//qBorderMapDir is used for both chosing a border map (qBorderMapSelec) and chosing a border map offset(qBorderMapOff)
@@ -162,7 +162,7 @@ void State_MapEditor::init()
 	qBorderMapDir.addQuery("choice", "Right", QueryWindow::QueryType::Choice_string);
 	qBorderMapDir.addQuery("choice", "Down", QueryWindow::QueryType::Choice_string);
 	qBorderMapDir.addQuery("choice", "Left", QueryWindow::QueryType::Choice_string);
-	qBorderMapDir.init("Border Direction", eng->gui(), &eng->guiLd(), [&]()
+	qBorderMapDir.init("Border Direction", eng->gui(), [&]()
 	{
 		const std::string& choice = qBorderMapDir.getChoice_string();
 		qBorderDirection = (choice == "Up") ? utl::Direction::up :
@@ -180,18 +180,18 @@ void State_MapEditor::init()
 		}
 		qBorderMapDir.resetQueries();
 	});
-	eng->guiH().reg(&qBorderMapDir);
-	eng->guiH().regInput(&qBorderMapDir);
+	eng->guiH().regMouseUpdates(&qBorderMapDir);
+	eng->guiH().regTextUpdates(&qBorderMapDir);
 
 	//border map offset selection
 	qBorderMapOffset.addQuery("offset", "Offset: ", QueryWindow::QueryType::Input_int);
-	qBorderMapOffset.init("Border Offset", eng->gui(), &eng->guiLd(), [&]()
+	qBorderMapOffset.init("Border Offset", eng->gui(), [&]()
 	{
 		eng->tileEd().changeBorderOffset(qBorderDirection, qBorderMapOffset.getResult_int("offset"));
 		qBorderMapOffset.resetQueries();
 	});
-	eng->guiH().reg(&qBorderMapOffset);
-	eng->guiH().regInput(&qBorderMapOffset);
+	eng->guiH().regMouseUpdates(&qBorderMapOffset);
+	eng->guiH().regTextUpdates(&qBorderMapOffset);
 
 	//border map selection
 	for(auto& it : utl::getFiles("Data/Maps", false))
@@ -199,7 +199,7 @@ void State_MapEditor::init()
 		qBorderMapSelec.addQuery("choice", it, QueryWindow::QueryType::Choice_string);
 	}
 	qBorderMapSelec.addQuery("choice", "None", QueryWindow::QueryType::Choice_string);
-	qBorderMapSelec.init("Border Selection", eng->gui(), &eng->guiLd(), [&]()
+	qBorderMapSelec.init("Border Selection", eng->gui(), [&]()
 	{
 		if(qBorderMapSelec.getChoice_string() == "None")
 		{
@@ -216,8 +216,8 @@ void State_MapEditor::init()
 		qBorderMapSelec.resetQueries();
 	});
 
-	eng->guiH().reg(&qBorderMapSelec);
-	eng->guiH().regInput(&qBorderMapSelec);
+	eng->guiH().regMouseUpdates(&qBorderMapSelec);
+	eng->guiH().regTextUpdates(&qBorderMapSelec);
 
 }
 
@@ -225,7 +225,7 @@ State_MapEditor::~State_MapEditor()
 {
 	eng->tileEd().overrideMap();
 	eng->guiH().clear();
-	eng->gui().purgeButtons();
+	eng->gui().edit().purgeButtons();
 	eng->tileEd().closeMap();
 }
 
@@ -320,68 +320,68 @@ void State_MapEditor::update(sf::Time elapsedTime)
 	if(eng->mouse().isMousePressed(ctr::Input::LMouse))
 	{
 		//handle gui input
-		if(eng->gui().isClicked("newMap"))
+		if(eng->gui().isHovered("newMap"))
 		{
 			if(!isQueryHovered())
 			{
 				qNewMap.setActive(true);
 			}
 		}
-		else if(eng->gui().isClicked("openMap"))
+		else if(eng->gui().isHovered("openMap"))
 		{
 			if(!isQueryHovered())
 			{
 				qOpenMap.setActive(true);
 			}
 		}
-		else if(eng->gui().isClicked("save"))
+		else if(eng->gui().isHovered("save"))
 		{
 			eng->tileEd().overrideMap();
 		}
-		else if(eng->gui().isClicked("saveAs"))
+		else if(eng->gui().isHovered("saveAs"))
 		{
 			if(!isQueryHovered())
 			{
 				qSaveMapAs.setActive(true);
 			}
 		}
-		else if(eng->gui().isClicked("toggleGrid"))
+		else if(eng->gui().isHovered("toggleGrid"))
 		{
 			eng->tileEd().showGridLines(tg_grid.toggle());
 		}
-		else if(eng->gui().isClicked("toggleBorder"))
+		else if(eng->gui().isHovered("toggleBorder"))
 		{
 			eng->tileEd().showBorderMaps(tg_border.toggle());
 		}
-		else if(eng->gui().isClicked("viewMap"))
+		else if(eng->gui().isHovered("viewMap"))
 		{
 			mode = Mode::TileMap;
 			mapEditTab.setActivity(true);
 		}
-		else if(eng->gui().isClicked("viewSheet"))
+		else if(eng->gui().isHovered("viewSheet"))
 		{
 			mode = Mode::TileChoice;
 			mapEditTab.setActivity(false);
 			eng->tileEd().resetTileAlpha();
 		}
-		else if(eng->gui().isClicked("sel_none"))
+		else if(eng->gui().isHovered("sel_none"))
 		{
 			selection = Selection::none;
 		}
-		else if(eng->gui().isClicked("sel_tile"))
+		else if(eng->gui().isHovered("sel_tile"))
 		{
 			selection = Selection::tile;
 		}
-		else if(eng->gui().isClicked("sel_span"))
+		else if(eng->gui().isHovered("sel_span"))
 		{
 			selection = Selection::span;
 		}
-		else if(eng->gui().isClicked("sel_eras"))
+		else if(eng->gui().isHovered("sel_eras"))
 		{
 			tileID = 0;
 			mapStatus.updateVal("selected tile: ", "Erasor");
 		}
-		else if(eng->gui().isClicked("bor_add"))
+		else if(eng->gui().isHovered("bor_add"))
 		{
 			if(!isQueryHovered())
 			{
@@ -389,7 +389,7 @@ void State_MapEditor::update(sf::Time elapsedTime)
 				qBorderMapDir.setActive(true);
 			}
 		}
-		else if(eng->gui().isClicked("bor_off"))
+		else if(eng->gui().isHovered("bor_off"))
 		{
 			if(!isQueryHovered())
 			{
@@ -519,7 +519,7 @@ void State_MapEditor::displayTextures()
 		break;
 	case Mode::TileChoice:
 		eng->win().setView(tileSheetView);
-		eng->tileEd().drawTiles(*eng->gui().getFont());
+		eng->tileEd().drawTiles(eng->gui().edit().getFont());
 		if(eng->tileEd().isLoaded() && !isGuiHovered()) {eng->tileEd().hoverTile(selectedTile.x, selectedTile.y);}
 		break;
 	}

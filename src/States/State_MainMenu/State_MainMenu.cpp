@@ -7,14 +7,16 @@ State_MainMenu::State_MainMenu()
 
 void State_MainMenu::init()
 {
-	eng->guiLd().loadGui("mainMenu");
-	eng->gui().setBtnAtr("versionText", "text", gui::BtnAtrChar::text, eng->gui().getText("T_QDevTools") + U" " + utl::toU32(eng->getVersion()));
-	eng->gui().setBtnAtr("versionText_eng", "text", gui::BtnAtrChar::text, eng->gui().getText("T_Eng_Version") + U" " + utl::toU32(eng->getVersion_eng()));
+	GuiBuilder& guiBuilder = eng->gui().edit();
+	
+	eng->gui().loadGui("mainMenu");
+	guiBuilder.setBtnAtr("versionText", "text", gui::BtnAtrChar::text, guiBuilder.getText("T_QDevTools") + U" " + utl::toU32(eng->getVersion()));
+	guiBuilder.setBtnAtr("versionText_eng", "text", gui::BtnAtrChar::text, guiBuilder.getText("T_Eng_Version") + U" " + utl::toU32(eng->getVersion_eng()));
 }
 
 State_MainMenu::~State_MainMenu()
 {
-	eng->gui().purgeButtons();
+	eng->gui().edit().purgeButtons();
 	std::cout << "Closing Main Menu" << std::endl;
 }
 
@@ -27,11 +29,11 @@ void State_MainMenu::update(sf::Time elapsedTime)
 {
 	if(eng->mouse().isMouseReleased(ctr::Input::LMouse))
 	{
-		if(eng->gui().isClicked("exit"))
+		if(eng->gui().isHovered("exit"))
 		{
 			eng->terminate();
 		}
-		else if(eng->gui().isClicked("editMap"))
+		else if(eng->gui().isHovered("editMap"))
         {
 			eng->state().changeState("MapEditor");
         }

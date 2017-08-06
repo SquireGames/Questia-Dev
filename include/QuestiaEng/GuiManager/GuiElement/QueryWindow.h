@@ -20,7 +20,7 @@ public:
 	enum class QueryType {Input_int, Input_string, Choice_string};
 
 	void addQuery(const std::string& queryID, const std::string& queryQuestion, QueryType queryType);
-	void init(const std::string& windowName, GuiManager& guiManager, GuiLoader* guiLoader, std::function<void()> handle);
+	void init(const std::string& windowName, GuiManager& guiManager, std::function<void()> handle);
 	void reInit();
 
 	void setActive(bool isActive);
@@ -68,8 +68,8 @@ private:
 	int querySelection = -1;
 
 	std::string groupName;
-	std::string button_windowBox;
-	std::string button_closeButton;
+	int button_windowBox;
+	int button_closeButton;
 	std::string button_submitButton;
 
 	std::vector<std::pair<std::string, Query>> queryValues;

@@ -18,7 +18,7 @@ public:
 	void track(const std::string&, const std::string&, int space);
 	void addSpace(int space);
 
-	void init(const std::string& barName, GuiManager& guiManager, GuiLoader& guiLoader);
+	void init(const std::string& barName, GuiManager& guiManager);
 
 	void updateVal(const std::string&, int val);
 	void updateVal(const std::string&, const std::string&);

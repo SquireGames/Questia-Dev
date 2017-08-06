@@ -6,7 +6,7 @@
 
 #include "QuestiaEng/ResourceManager/ResourceManager.h"
 #include "QuestiaEng/GuiManager/GuiManager.h"
-#include "QuestiaEng/GuiManager/GuiHandler.h"
+#include "QuestiaEng/GuiManager/GuiElementUpdater.h"
 #include "QuestiaEng/GuiManager/GuiLoader.h"
 #include "QuestiaEng/TileEngine/TileEngine.h"
 #include "QuestiaEng/TileEngine/TileEngine_Editor.h"
@@ -42,8 +42,7 @@ public:
 	sf::RenderWindow&   win()   {return window;}
 	ResourceManager& 	res() 	{return resourceManager;}
 	GuiManager&			gui() 	{return guiManager;}
-	GuiHandler& 		guiH()	{return guiHandler;}
-	GuiLoader& 			guiLd() {return guiLoader;}
+	GuiElementUpdater& 	guiH()	{return guiElementUpdater;}
 	TileEngine&	 		tile()	{return tileEngine;}
 	TileEngine_Editor&	tileEd(){return tileEngineEditor;}
 	EntityManager& 		ent()	{return entityManager;}
@@ -73,8 +72,7 @@ private:
 	//manager
 	ResourceManager resourceManager;
 	GuiManager guiManager;
-	GuiHandler guiHandler;
-	GuiLoader guiLoader;
+	GuiElementUpdater guiElementUpdater;
 	TileEngine tileEngine;
 	TileEngine_Editor tileEngineEditor;
 	EntityManager entityManager;
