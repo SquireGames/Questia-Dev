@@ -28,12 +28,16 @@ class Entity_Player;
 class EntityManager
 {
 public:
+	//client
 	EntityManager(ResourceManager& resourceManager, sf::RenderWindow& window);
+	//server
+	EntityManager();
+
 	~EntityManager();
 
 	//registers recipes of entities
 	void reg(const std::string& name, std::function<Entity*(unsigned int id, EntityManager&)> entity);
-	void reg(const std::string& name, std::function<Entity*(unsigned int id, EntityManager&, ResourceManager&, utl::Vector2f coords)> entity);
+	void reg(const std::string& name, std::function<Entity*(unsigned int id, EntityManager&, ResourceManager*, utl::Vector2f coords)> entity);
 
 	//spawns registered entities
 	int spawn(const std::string& name);
@@ -51,8 +55,14 @@ public:
 	void attemptMove(Entity_Coll& entity, const utl::Vector2f& velocity);
 
 private:
-	ResourceManager& resourceManager;
-	sf::RenderWindow& window;
+	//helpers
+	void killEntity(unsigned int id);
+	template <class T> void removeID(unsigned int id, std::vector<T>& entityVector);
+	void drawCollBounds(sf::RenderWindow& window, const Bounds* bounds, utl::Vector2f coords, sf::Color color);
+	Entity* getEntity(unsigned int id);
+
+	ResourceManager* resourceManager;
+	sf::RenderWindow* window;
 
 	//every entity has a unique ID
 	unsigned int idCounter = 0;
@@ -62,7 +72,7 @@ private:
 
 	//holds recipes for entities
 	std::map<std::string, std::function<Entity*(unsigned int id, EntityManager&)>> entityRegistry;
-	std::map<std::string, std::function<Entity*(unsigned int id, EntityManager&, ResourceManager&, utl::Vector2f coords)>> entityRegistry_Obj;
+	std::map<std::string, std::function<Entity*(unsigned int id, EntityManager&, ResourceManager*, utl::Vector2f coords)>> entityRegistry_Obj;
 
 	//holds every entity
 	std::vector<std::unique_ptr<Entity> > entities;
@@ -74,12 +84,12 @@ private:
 	std::vector<Entity_Living*> entities_Living;
 	std::vector<Entity_Player*> entities_Player;
 
-	//helpers
-	void killEntity(unsigned int id);
-	template <class T> void removeID(unsigned int id, std::vector<T>& entityVector);
-	void drawCollBounds(sf::RenderWindow& window, const Bounds* bounds, utl::Vector2f coords, sf::Color color);
-	Entity* getEntity(unsigned int id);
+	//client - true, server - false
+#ifdef DEBUGMODE
+	bool displayTextures;
+#endif
 	
+
 	friend class Entity;
 };
 

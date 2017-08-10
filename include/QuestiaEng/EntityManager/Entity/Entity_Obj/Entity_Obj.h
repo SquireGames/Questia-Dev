@@ -16,24 +16,27 @@ union pValue
 class Entity_Obj : public Entity
 {
 public:
-    Entity_Obj(unsigned int id, EntityManager& entityManager, ResourceManager& resourceManager, utl::Vector2f coords);
-    virtual ~Entity_Obj() = 0;
+	Entity_Obj(unsigned int id, EntityManager& entityManager, ResourceManager* resourceManager, utl::Vector2f coords);
+	virtual ~Entity_Obj() = 0;
 
-    virtual void draw(sf::RenderWindow& window, DrawLayer drawLayer);
+	virtual void update() = 0;
+
+	virtual void draw(sf::RenderWindow& window, DrawLayer drawLayer) = 0;
 	//distance between coords and ground
-	virtual int getGroundOffset();
+	virtual int getGroundOffset() = 0;
 
-    utl::Vector2f coords;
-	
-	std::string displayTag = std::string();
-	bool showTag = false;
+
+	utl::Vector2f coords;
+	std::string displayTag;
 	//distance between coords and tag text display
 	int tagOffset = -16;
-	
+	bool showTag = false;
+
 protected:
+	virtual void defaultUses() override;
+
 	std::map<pKey, pValue> properties;
-	
-    ResourceManager& resourceManager;
+	ResourceManager* resourceManager;
 };
 
 #endif // ENTITY_OBJ_

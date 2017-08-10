@@ -105,11 +105,19 @@ public:
 	struct RegularSprite
 	{
 		RegularSprite(std::string name) noexcept: atrName(name){}
-		RegularSprite(const RegularSprite&) = default;
+		RegularSprite(const RegularSprite& old) noexcept{copy(this, &old);}
 		RegularSprite(RegularSprite&&) noexcept = default;
-		RegularSprite& operator= (const RegularSprite&) = default;
+		RegularSprite& operator= (const RegularSprite& rhs) noexcept {copy(this, &rhs); return *this;}
 		RegularSprite& operator= (RegularSprite&&) noexcept = default;
 		~RegularSprite() noexcept = default;
+		
+		void copy(RegularSprite* copy, const RegularSprite* orig) noexcept
+		{
+			copy->atrName = orig->atrName;
+			copy->sprite = orig->sprite;
+			copy->position = orig->position;
+			copy->isChanged = orig->isChanged;
+		}
 		
 		std::string atrName;
 		sf::Sprite sprite;
@@ -123,11 +131,19 @@ public:
 			text.setFont(font);
 			text.setFillColor(sf::Color::Black); text.setOutlineColor(sf::Color::Black);
 		}
-		ButtonText(const ButtonText&) = default;
-		ButtonText(ButtonText&&) = default;
-		ButtonText& operator= (const ButtonText&) = default;
-		ButtonText& operator= (ButtonText&&) = default;
+		ButtonText(const ButtonText& old) noexcept {copy(this, &old);}
+		ButtonText(ButtonText&&) noexcept = default;
+		ButtonText& operator= (const ButtonText& rhs) noexcept {copy(this, &rhs); return *this;}
+		ButtonText& operator= (ButtonText&&) noexcept = default;
 		~ButtonText() noexcept = default;
+		
+		void copy(ButtonText* copy, const ButtonText* orig) noexcept
+		{
+			copy->atrName = orig->atrName;
+			copy->text = orig->text;
+			copy->position = orig->position;
+			copy->isChanged = orig->isChanged;
+		}
 		
 		std::string atrName;
 		sf::Text text;
@@ -141,26 +157,45 @@ public:
 			rectOverlay.setFillColor(sf::Color(0,0,0, 100));
 			rectOverlay.setSize(bounds);
 		}
-		OverlaySprite(const OverlaySprite&) = default;
-		OverlaySprite(OverlaySprite&&) = default;
-		OverlaySprite& operator= (const OverlaySprite&) = default;
+		OverlaySprite(const OverlaySprite& old) noexcept {copy(this, &old);}
+		OverlaySprite(OverlaySprite&&) noexcept = default;
+		OverlaySprite& operator= (const OverlaySprite& rhs) noexcept {copy(this, &rhs); return *this;}
 		OverlaySprite& operator= (OverlaySprite&&) noexcept = default;
 		~OverlaySprite() noexcept = default;
+		
+		void copy(OverlaySprite* copy, const OverlaySprite* orig) noexcept
+		{
+			copy->atrName = orig->atrName;
+			copy->rectOverlay = orig->rectOverlay;
+			copy->position = orig->position;
+			copy->isChanged = orig->isChanged;
+		}
 		
 		std::string atrName;
 		sf::RectangleShape rectOverlay;
 		std::pair <int, int> position = std::make_pair(0,0);
 		bool isChanged = true;
-		bool isHoveredOver = false;
 	};
 	struct PercentSprite
 	{
 		PercentSprite(std::string name) noexcept: atrName(name){}
-		PercentSprite(const PercentSprite&) = default;
-		PercentSprite(PercentSprite&&) = default;
-		PercentSprite& operator= (const PercentSprite&) = default;
+		PercentSprite(const PercentSprite& old) noexcept {copy(this, &old);}
+		PercentSprite(PercentSprite&&) noexcept = default;
+		PercentSprite& operator= (const PercentSprite& rhs) noexcept {copy(this, &rhs); return *this;}
 		PercentSprite& operator= (PercentSprite&&) noexcept = default;
 		~PercentSprite() noexcept = default;
+		
+		void copy(PercentSprite* copy, const PercentSprite* orig) noexcept
+		{
+			copy->atrName = orig->atrName;
+			copy->sprite = orig->sprite;
+			copy->rectOverlay = orig->rectOverlay;
+			copy->spritePercentage = orig->spritePercentage;
+			copy->directionOfGap = orig->directionOfGap;
+			copy->originalTextureRect = orig->originalTextureRect;
+			copy->position = orig->position;
+			copy->isChanged = orig->isChanged;
+		}
 		
 		std::string atrName;
 		sf::Sprite sprite;

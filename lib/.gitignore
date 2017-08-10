@@ -1,6 +1,7 @@
 # Allowed for convenience #
 ###########################
 
-!*.dll
 !*.so
+!*.dll
 !bin/
+!*.a

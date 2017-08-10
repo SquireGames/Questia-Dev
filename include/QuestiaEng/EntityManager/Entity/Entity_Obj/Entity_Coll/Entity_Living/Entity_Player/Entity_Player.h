@@ -18,10 +18,22 @@ enum class MovementControl
 class Entity_Player : public Entity_Living
 {
 public:
-    Entity_Player(unsigned int id, EntityManager& entityManager, ResourceManager& resourceManager, utl::Vector2f coords);
+    Entity_Player(unsigned int id, EntityManager& entityManager, ResourceManager* resourceManager, utl::Vector2f coords);
     virtual ~Entity_Player() = 0;
+	
+	virtual void update() = 0;
+	
+	virtual void draw(sf::RenderWindow& window, DrawLayer drawLayer) = 0;
+	//distance between coords and ground
+	virtual int getGroundOffset() = 0;
+
+	virtual const Bounds* getCollBounds() = 0;
+	virtual const Bounds* getHitBounds() = 0;
 
 private:
+	virtual void defaultUses() override final;
+	
+	virtual void onCollision(const std::map<pKey, pValue>& atrs, unsigned int entityID) = 0;
 };
 
 #endif // ENTITY_PLAYER_H

@@ -15,18 +15,19 @@ public:
     Entity(unsigned int id, EntityManager& entityManager);
     virtual ~Entity() = 0;
 
-    virtual void update();
+    virtual void update() = 0;
 
     unsigned int getID();
 
 protected:
-    EntityManager& entityManager;
-	
+	virtual void defaultUses();
 	void useUpdate(Entity* e);
 	void useObj(Entity_Obj* e);
 	void useColl(Entity_Coll* e);
 	void useLiving(Entity_Living* e);
 	void usePlayer(Entity_Player* e);
+	
+    EntityManager& entityManager;
 
 private:
     unsigned int id;

@@ -28,8 +28,11 @@
 class TileEngine
 {
 public:
-	//ctor and dtor
+	//for client
 	TileEngine(sf::RenderWindow& window, ResourceManager& resourceManager);
+	//for server
+	TileEngine();
+
 	~TileEngine() = default;
 
 	//only needs to be called to change default settings
@@ -69,8 +72,8 @@ private:
 	TileMap::TextureMode textureMode = TileMap::TextureMode::Map;
 	TileMap::RenderMode renderMode = TileMap::RenderMode::Batch;
 
-	sf::RenderWindow& window;
-	ResourceManager& resourceManager;
+	sf::RenderWindow* window;
+	ResourceManager* resourceManager;
 
 	//every map is generated an ID, derived from mapCount
 	std::unordered_map<std::string, int> mapID;
@@ -81,12 +84,17 @@ private:
 
 	int mapCount = 0;
 	int currentMapID = -1;
-	
+
 	//used by TileEngine_Editor to only draw specific layers at a specific transparency
 	//only utilized in TileMap::RenderMode::Sprite
 	int layerSelection = -1;
 	//transparency out of 100
 	int layerTransparency = -1;
+
+	//client - true, server - false
+#ifdef DEBUGMODE
+	bool displayTextures;
+#endif
 
 	bool mapLoaded(const std::string& mapName)
 	{

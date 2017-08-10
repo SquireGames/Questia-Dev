@@ -4,10 +4,10 @@
 CC         := g++ 
 CFLAGS     := -std=c++14 -MP -MD -Wall
 DEBUGFLAGS := -g -DDEBUGMODE=1
-LIB_win    := -L lib/SFML-2.4.2-win/lib -lsfml-audio -lsfml-network -lsfml-graphics -lsfml-window -lsfml-system -L lib/QuestiaEng-1.0.0-win -lquestia-eng.1.0.0
-LIB_win_db := -L lib/SFML-2.4.2-win/lib -lsfml-audio -lsfml-network -lsfml-graphics -lsfml-window -lsfml-system -L lib/QuestiaEng-1.0.0-win -lquestia-eng-d.1.0.0
-LIB_lin    := -lsfml-audio -lsfml-network -lsfml-graphics -lsfml-window -lsfml-system -lquestia-eng.1.0.0
-LIB_lin_db := -lsfml-audio -lsfml-network -lsfml-graphics -lsfml-window -lsfml-system -lquestia-eng-d.1.0.0
+LIB_win    := -L lib/SFML-2.4.2-win/lib -lsfml-audio -lsfml-network -lsfml-graphics -lsfml-window -lsfml-system -L lib/QuestiaEng-1.0.0-win -lquestia-eng.1.0.0 -L lib/Cryptopp-5.6.5-win -lcryptopp
+LIB_win_db := -L lib/SFML-2.4.2-win/lib -lsfml-audio -lsfml-network -lsfml-graphics -lsfml-window -lsfml-system -L lib/QuestiaEng-1.0.0-win -lquestia-eng-d.1.0.0 -L lib/Cryptopp-5.6.5-win -lcryptopp
+LIB_lin    := -lcryptopp -lsfml-audio -lsfml-network -lsfml-graphics -lsfml-window -lsfml-system -lquestia-eng.1.0.0
+LIB_lin_db := -lcryptopp -lsfml-audio -lsfml-network -lsfml-graphics -lsfml-window -lsfml-system -lquestia-eng-d.1.0.0
 SRCEXT     := cpp
 
 SRCDIR     := src

@@ -69,7 +69,7 @@ private:
 
 	//used if batching
 	std::string textureAtlasLocation = std::string();
-	sf::Texture* textureAtlas =  nullptr;
+	sf::Texture* textureAtlas = nullptr;
 
 	//(width * height * layers) sized vector, holds tile ID
 	std::vector <int> tileMap;
